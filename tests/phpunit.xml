@@ -1,0 +1,13 @@
+<phpunit
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.4/phpunit.xsd"
+		bootstrap="bootstrap.php"
+		colors="true"
+		strict="true"
+>
+	<testsuites>
+		<testsuite name="JsonRpc">
+			<directory>JsonRpc/*Test.php</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
