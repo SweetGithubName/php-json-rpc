@@ -1,15 +1,15 @@
 <?php
 
-namespace DattoApi\JsonRpc;
+namespace DattoApi;
 
 /**
- * Class Server
+ * Class JsonRpc
  *
  * @link http://www.jsonrpc.org/specification JSON-RPC 2.0 Specifications
  *
- * @package JsonRpc
+ * @package DattoApi
  */
-class Server
+class JsonRpc
 {
     const VERSION = '2.0';
 

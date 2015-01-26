@@ -1,6 +1,6 @@
 <?php
 
-namespace DattoApi\JsonRpc;
+namespace DattoApi;
 
 class Method
 {

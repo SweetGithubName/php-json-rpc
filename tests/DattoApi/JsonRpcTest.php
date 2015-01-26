@@ -1,17 +1,17 @@
 <?php
 
-namespace DattoApi\JsonRpc;
+namespace DattoApi;
 
 use PHPUnit_Framework_TestCase;
 
-class ServerTest extends PHPUnit_Framework_TestCase
+class JsonRpcTest extends PHPUnit_Framework_TestCase
 {
-    /** @var Server */
-    private $server;
+    /** @var JsonRpc */
+    private $evaluator;
 
     public function setUp()
     {
-        $this->server = new Server();
+        $this->evaluator = new JsonRpc();
     }
 
     public function testArgumentsPositionalA()
@@ -179,7 +179,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     private function compare($input, $expectedJsonOutput)
     {
-        $actualJsonOutput = $this->server->evaluate($input);
+        $actualJsonOutput = $this->evaluator->evaluate($input);
 
         $expectedOutput = json_decode($expectedJsonOutput, true);
         $actualOutput = json_decode($actualJsonOutput, true);
