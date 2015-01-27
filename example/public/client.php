@@ -6,17 +6,11 @@ spl_autoload_register('autoloadSource');
 spl_autoload_register('autoloadExample');
 
 use DattoApi\Participant\Client;
+use DattoApi\Message\Query;
 
-$uri = 'http://api/server.php';
+$client = new Client('http://api/server.php');
 
-$arguments = array(
-    'jsonrpc' => '2.0',
-    'id' => 1,
-    'method' => 'Example/Math:subtract',
-    'params' => [3, 2]
-);
+$query = new Query(1, 'Example/Math/subtract', array(3, 2));
+$reply = $client->send($query);
 
-$client = new Client($uri);
-$reply = $client->send($arguments);
-
-var_dump($reply);
+echo json_encode($reply), "\n";

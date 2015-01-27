@@ -7,16 +7,19 @@ class Method
     /** @var callable */
     private $callable;
 
+    /** @var array */
+    private $arguments;
+
     public function __construct($name, $arguments)
     {
-        $callable = self::validCallable($name);
+        $name = self::validName($name);
         $arguments = self::validArguments($arguments);
 
-        if (!isset($callable, $arguments)) {
+        if (!isset($name, $arguments)) {
             return;
         }
 
-        $this->callable = $callable;
+        $this->callable = self::getCallable($name);
         $this->arguments = $arguments;
     }
 
@@ -27,7 +30,7 @@ class Method
 
     public function run()
     {
-        if (!is_callable($this->callable)) {
+        if ($this->callable === null) {
             return null;
         }
 
@@ -38,37 +41,20 @@ class Method
         return call_user_func($this->callable, $this->arguments);
     }
 
-    private static function validCallable($input)
+    private static function getCallable($name)
     {
-        if (!is_string($input)) {
-            return null;
-        }
+        $parts = explode('/', $name);
 
-        $colon = strrpos($input, ':');
-
-        if (!is_int($colon)) {
-            return null;
-        }
-
-        $class = '\\' . strtr(substr($input, 0, $colon), '/', '\\');
-        $method = substr($input, $colon + 1);
+        $method = array_pop($parts);
+        $class = '\\' . implode('\\', $parts);
 
         $callable = array($class, $method);
 
-        if (!is_callable($callable)) {
+        if (!@is_callable($callable)) {
             return null;
         }
 
         return $callable;
-    }
-
-    private static function validArguments($input)
-    {
-        if (!is_array($input)) {
-            return null;
-        }
-
-        return $input;
     }
 
     private static function isPositionalArguments($arguments)
@@ -82,5 +68,29 @@ class Method
         }
 
         return true;
+    }
+
+    private static function validName($input)
+    {
+        if (!is_string($input)) {
+            return null;
+        }
+
+        $validPattern = '~^[a-zA-Z0-9]+(/[a-zA-Z0-9]+)+$~';
+
+        if (preg_match($validPattern, $input) !== 1) {
+            return null;
+        }
+
+        return $input;
+    }
+
+    private static function validArguments($input)
+    {
+        if (!is_array($input)) {
+            return null;
+        }
+
+        return $input;
     }
 }

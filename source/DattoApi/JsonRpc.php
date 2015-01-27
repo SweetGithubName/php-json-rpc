@@ -2,6 +2,10 @@
 
 namespace DattoApi;
 
+use DattoApi\Message;
+use DattoApi\Message\Notification;
+use DattoApi\Message\Query;
+
 /**
  * Class JsonRpc
  *
@@ -35,6 +39,60 @@ class JsonRpc
         }
 
         return json_encode($output);
+    }
+
+    public static function encode($messages)
+    {
+        if (!is_array($messages)) {
+            return null;
+        }
+
+        $output = array();
+
+        /** @var Message $message */
+        foreach ($messages as $message) {
+            if (!is_object($message)) {
+                return null;
+            }
+
+            switch ($message->getType()) {
+                case Message::TYPE_NOTIFICATION:
+                    $output[] = self::encodeNotification($message);
+                    break;
+
+                case Message::TYPE_QUERY:
+                    $output[] = self::encodeQuery($message);
+                    break;
+
+                default:
+                    return null;
+            }
+        }
+
+        if (count($output) === 1) {
+            $output = array_shift($output);
+        }
+
+        return json_encode($output);
+    }
+
+    public static function encodeQuery(Query $query)
+    {
+        return array(
+            'jsonrpc' => self::VERSION,
+            'id' => $query->getId(),
+            'method' => $query->getMethod(),
+            'params' => $query->getArguments()
+        );
+    }
+
+    public static function encodeNotification(Notification $notification)
+    {
+        return array(
+            'jsonrpc' => self::VERSION,
+            'method' => $notification->getMethod(),
+            'params' => $notification->getArguments()
+        );
     }
 
     /**

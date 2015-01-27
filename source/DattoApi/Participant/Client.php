@@ -2,6 +2,8 @@
 
 namespace DattoApi\Participant;
 
+use DattoApi\JsonRpc;
+
 class Client
 {
     /** @var string */
@@ -12,13 +14,15 @@ class Client
         $this->uri = $uri;
     }
 
-    public function send($arguments)
+    public function send()
     {
+        $arguments = func_get_args();
+
         $options = array(
             'http' => array(
                 'method' => 'GET',
-                'header' => 'Content-type: application/json',
-                'content' => json_encode($arguments)
+                'header' => 'Content-Type: application/json',
+                'content' => JsonRpc::encode($arguments)
             )
         );
 
