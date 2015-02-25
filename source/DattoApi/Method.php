@@ -50,7 +50,7 @@ class Method
 
         $callable = array($class, $method);
 
-        if (!@is_callable($callable)) {
+        if (!is_callable($callable)) {
             return null;
         }
 
