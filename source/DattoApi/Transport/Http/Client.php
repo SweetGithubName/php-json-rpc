@@ -1,8 +1,8 @@
 <?php
 
-namespace DattoApi\Participant;
+namespace DattoApi\Transport\Http;
 
-use DattoApi\JsonRpc;
+use DattoApi\Data\JsonRpc;
 
 class Client
 {
@@ -18,11 +18,17 @@ class Client
     {
         $arguments = func_get_args();
 
+        $content = JsonRpc::encode($arguments);
+
+        $header = 'Content-Type: application/json' . "\r\n" .
+            'Content-Length: ' . strlen($content) . "\r\n" .
+            'Accept: application/json' . "\r\n";
+
         $options = array(
             'http' => array(
-                'method' => 'GET',
-                'header' => 'Content-Type: application/json',
-                'content' => JsonRpc::encode($arguments)
+                'method' => 'POST',
+                'header' => $header,
+                'content' => $content
             )
         );
 

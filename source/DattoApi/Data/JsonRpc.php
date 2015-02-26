@@ -1,17 +1,17 @@
 <?php
 
-namespace DattoApi;
+namespace DattoApi\Data;
 
-use DattoApi\Message;
-use DattoApi\Message\Notification;
-use DattoApi\Message\Query;
+use DattoApi\Data\Message;
+use DattoApi\Data\Message\Notification;
+use DattoApi\Data\Message\Query;
 
 /**
  * Class JsonRpc
  *
  * @link http://www.jsonrpc.org/specification JSON-RPC 2.0 Specifications
  *
- * @package DattoApi
+ * @package DattoApi\Data
  */
 class JsonRpc
 {

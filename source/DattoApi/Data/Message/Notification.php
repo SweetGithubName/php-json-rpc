@@ -1,8 +1,8 @@
 <?php
 
-namespace DattoApi\Message;
+namespace DattoApi\Data\Message;
 
-use DattoApi\Message;
+use DattoApi\Data\Message;
 
 class Notification extends Message
 {

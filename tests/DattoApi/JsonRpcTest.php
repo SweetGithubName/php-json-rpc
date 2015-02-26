@@ -1,6 +1,6 @@
 <?php
 
-namespace DattoApi;
+namespace DattoApi\Data;
 
 use PHPUnit_Framework_TestCase;
 
