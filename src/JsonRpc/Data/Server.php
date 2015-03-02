@@ -1,19 +1,17 @@
 <?php
 
-namespace DattoApi\Data;
+namespace JsonRpc\Data;
 
-use DattoApi\Data\Message;
-use DattoApi\Data\Message\Notification;
-use DattoApi\Data\Message\Query;
+use Query\Method;
 
 /**
- * Class JsonRpc
+ * Class Server
  *
  * @link http://www.jsonrpc.org/specification JSON-RPC 2.0 Specifications
  *
- * @package DattoApi\Data
+ * @package JsonRpc\Data
  */
-class JsonRpc
+class Server
 {
     const VERSION = '2.0';
 
@@ -28,7 +26,7 @@ class JsonRpc
      * Returns an array of response/error objects as a JSON string, when multiple queries are made.
      * Returns null, when no response is necessary.
      */
-    public function evaluate($json)
+    public function process($json)
     {
         $input = @json_decode($json, true);
 
@@ -39,60 +37,6 @@ class JsonRpc
         }
 
         return json_encode($output);
-    }
-
-    public static function encode($messages)
-    {
-        if (!is_array($messages)) {
-            return null;
-        }
-
-        $output = array();
-
-        /** @var Message $message */
-        foreach ($messages as $message) {
-            if (!is_object($message)) {
-                return null;
-            }
-
-            switch ($message->getType()) {
-                case Message::TYPE_NOTIFICATION:
-                    $output[] = self::encodeNotification($message);
-                    break;
-
-                case Message::TYPE_QUERY:
-                    $output[] = self::encodeQuery($message);
-                    break;
-
-                default:
-                    return null;
-            }
-        }
-
-        if (count($output) === 1) {
-            $output = array_shift($output);
-        }
-
-        return json_encode($output);
-    }
-
-    public static function encodeQuery(Query $query)
-    {
-        return array(
-            'jsonrpc' => self::VERSION,
-            'id' => $query->getId(),
-            'method' => $query->getMethod(),
-            'params' => $query->getArguments()
-        );
-    }
-
-    public static function encodeNotification(Notification $notification)
-    {
-        return array(
-            'jsonrpc' => self::VERSION,
-            'method' => $notification->getMethod(),
-            'params' => $notification->getArguments()
-        );
     }
 
     /**

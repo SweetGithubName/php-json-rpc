@@ -2,12 +2,12 @@
 
 function autoloadSource($className)
 {
-    $path = dirname(__DIR__) . '/source/' . strtr($className, '\\', '/') . '.php';
+    $path = dirname(__DIR__) . '/src/' . strtr($className, '\\', '/') . '.php';
     @include $path;
 }
 
-function autoloadExample($className)
+function autoloadExamples($className)
 {
-    $path = __DIR__ . '/private/' . strtr($className, '\\', '/') . '.php';
+    $path = __DIR__ . '/src/' . strtr($className, '\\', '/') . '.php';
     @include $path;
 }

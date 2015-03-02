@@ -1,6 +1,6 @@
 <?php
 
-namespace DattoApi\Data;
+namespace Query;
 
 class Method
 {

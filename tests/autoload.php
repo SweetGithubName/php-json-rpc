@@ -2,7 +2,7 @@
 
 function autoloadSource($className)
 {
-    $path = dirname(__DIR__) . '/source/' . strtr($className, '\\', '/') . '.php';
+    $path = dirname(__DIR__) . '/src/' . strtr($className, '\\', '/') . '.php';
 
     if (is_file($path)) {
         require $path;

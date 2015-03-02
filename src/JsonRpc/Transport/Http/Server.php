@@ -1,21 +1,32 @@
 <?php
 
-namespace DattoApi\Transport\Http;
+namespace JsonRpc\Transport\Http;
 
-use DattoApi\Data\JsonRpc;
+use JsonRpc\Data;
+use JsonRpc\Transport;
 
 /**
  * Class Server
  *
  * @link http://www.simple-is-better.org/json-rpc/transport_http.html Proposed specifications
  *
- * @package DattoApi\Transport\Http
+ * @package JsonRpc\Transport\Http
  */
-class Server
+class Server implements Transport\Server
 {
-    public function run()
+    private static $contentType = 'application/json';
+
+    /** @var Data\Server */
+    private $server;
+
+    public function __construct()
     {
-        if (@$_SERVER['CONTENT_TYPE'] !== 'application/json') {
+        $this->server = new Data\Server();
+    }
+
+    public function reply()
+    {
+        if (@$_SERVER['CONTENT_TYPE'] !== self::$contentType) {
             self::errorInvalidContentType();
         }
 
@@ -25,8 +36,7 @@ class Server
             self::errorInvalidBody();
         }
 
-        $server = new JsonRpc();
-        $output = $server->evaluate($contents);
+        $output = $this->server->process($contents);
 
         if ($output === null) {
             self::successNoContent();
@@ -37,7 +47,7 @@ class Server
 
     private static function errorInvalidContentType()
     {
-        self::error(415, 'Unsupported Media Type', "Please submit your request with the HTTP header:<br>\r\n&ldquo;Content-Type: application/json&rdquo;");
+        self::error(415, 'Unsupported Media Type', "Please submit your request with the HTTP header:<br>\r\n&ldquo;Content-Type: " . self::$contentType . "&rdquo;");
     }
 
     private static function errorInvalidBody()
@@ -54,7 +64,7 @@ class Server
     private static function successContent($content)
     {
         header('HTTP/1.0 200 OK');
-        header('Content-Type: application/json');
+        header('Content-Type: ' . self::$contentType);
         header('Content-Length: ' . strlen($content));
         echo $content;
         exit();
