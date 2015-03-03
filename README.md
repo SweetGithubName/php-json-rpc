@@ -11,6 +11,10 @@
 
 * PHP >= 5.3
 
+## License
+
+This package is released under an open-source license: [GPL-3.0](http://www.gnu.org/licenses/gpl-3.0.html)
+
 ## Installation
 
 If you're using [Composer](https://getcomposer.org/) as your dependency
@@ -18,6 +22,9 @@ management system, you can install the source code like this:
 ```
 composer require datto/php-json-rpc
 ```
+
+Otherwise, simply copy the namespaced contents of the "src" directory into your
+own source directory.
 
 ## Examples
 
@@ -35,7 +42,7 @@ $reply = $client->send();
 Server::reply();
 ```
 
-> See the "examples" directory for more examples.
+*See the "examples" directory for ready-to-use examples.*
 
 ## Unit tests
 
@@ -44,11 +51,6 @@ You can run the suite of unit tests like this:
 cd tests
 php phpunit.phar .
 ```
-
-## License
-
-[GPL-3.0](http://www.gnu.org/licenses/gpl-3.0.html)
-
 
 ## Author
 
