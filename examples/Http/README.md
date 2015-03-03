@@ -4,7 +4,8 @@ This example shows how you might create a web API, where clients communicate
 with a remote API server over HTTP.
 
 In order to run the example, you'll need support for the URL "http://api/".
-You can set this up by editing two files:
+If you're using Linux in your development environment, you can set this up
+by editing two files:
 
 ## File 1:
 
