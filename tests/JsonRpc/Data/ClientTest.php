@@ -54,6 +54,6 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $expectedOutput = @json_decode($expectedJsonOutput, true);
         $actualOutput = @json_decode($actualJsonOutput, true);
 
-        $this->assertSame($expectedOutput, $actualOutput);
+        $this->assertEquals($expectedOutput, $actualOutput);
     }
 }

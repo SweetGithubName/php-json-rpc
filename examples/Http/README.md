@@ -15,7 +15,7 @@ You can set this up by editing two files:
 
 ## File 2:
 
-`sudo gedit /etc/apache2/sites-available`
+`sudo gedit /etc/apache2/sites-available/api.conf`
 ```
  <VirtualHost *:80>
 	ServerName api
@@ -36,6 +36,6 @@ You can set this up by editing two files:
 </VirtualHost>
 ```
 
-`sudo ln -s /etc/apache2/sites-available /etc/apache2/sites-enabled`
+`sudo ln -s /etc/apache2/sites-available/api.conf /etc/apache2/sites-enabled/api.conf`
 
 `sudo service apache2 restart`
