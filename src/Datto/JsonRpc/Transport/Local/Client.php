@@ -22,9 +22,35 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Transport;
+namespace Datto\JsonRpc\Transport\Local;
 
-interface Server
+use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Transport;
+
+class Client implements Transport\Client
 {
-    public static function reply();
+    /** @var Data\Client */
+    private $client;
+
+    public function __construct()
+    {
+        $this->client = new Data\Client();
+    }
+
+    public function notification($method, $arguments)
+    {
+        $this->client->notification($method, $arguments);
+    }
+
+    public function query($id, $method, $arguments)
+    {
+        $this->client->query($id, $method, $arguments);
+    }
+
+    public function send()
+    {
+        $message = $this->client->encode();
+        $reply = Data\Server::reply($message);
+        return $this->client->decode($reply);
+    }
 }

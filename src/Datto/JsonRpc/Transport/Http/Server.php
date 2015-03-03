@@ -22,17 +22,17 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Transport\Http;
+namespace Datto\JsonRpc\Transport\Http;
 
-use JsonRpc\Data;
-use JsonRpc\Transport;
+use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Transport;
 
 /**
  * Class Server
  *
  * @link http://www.simple-is-better.org/json-rpc/transport_http.html Proposed specifications
  *
- * @package JsonRpc\Transport\Http
+ * @package Datto\JsonRpc\Transport\Http
  */
 abstract class Server implements Transport\Server
 {
@@ -50,14 +50,13 @@ abstract class Server implements Transport\Server
             self::errorInvalidBody();
         }
 
-        $server = new Data\Server();
-        $output = $server->reply($message);
+        $reply = Data\Server::reply($message);
 
-        if ($output === null) {
+        if ($reply === null) {
             self::successNoContent();
         }
 
-        self::successContent($output);
+        self::successContent($reply);
     }
 
     private static function errorInvalidContentType()

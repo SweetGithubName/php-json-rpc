@@ -22,20 +22,12 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Data;
+namespace Datto\JsonRpc\Data;
 
 use PHPUnit_Framework_TestCase;
 
 class ServerTest extends PHPUnit_Framework_TestCase
 {
-    /** @var Server */
-    private $server;
-
-    public function setUp()
-    {
-        $this->server = new Server();
-    }
-
     public function testArgumentsPositionalA()
     {
         $input = '{"jsonrpc": "2.0", "method": "Example/Math/subtract", "params": [3, 2], "id": 1}';
@@ -201,7 +193,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     private function compare($input, $expectedJsonOutput)
     {
-        $actualJsonOutput = $this->server->reply($input);
+        $actualJsonOutput = Server::reply($input);
 
         $expectedOutput = json_decode($expectedJsonOutput, true);
         $actualOutput = json_decode($actualJsonOutput, true);

@@ -1,5 +1,5 @@
 {
-  "name": "datto/php-json-rpc",
+  "name": "datto/json-rpc",
   "description": "Fully unit tested JSON-RPC 2.0 for PHP",
   "version": "1.0.0",
   "type": "library",
@@ -22,12 +22,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Datto\\PhpJsonRpc\\": "src/PhpJsonRpc/"
+      "Datto\\": "src/Datto/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Datto\\PhpJsonRpc\\": "src/PhpJsonRpc/"
+      "Datto\\": "src/Datto/"
     }
   }
 }

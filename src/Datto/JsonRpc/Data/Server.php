@@ -22,16 +22,16 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Data;
+namespace Datto\JsonRpc\Data;
 
-use Query\Method;
+use Datto\Query\Method;
 
 /**
  * Class Server
  *
  * @link http://www.jsonrpc.org/specification JSON-RPC 2.0 Specifications
  *
- * @package JsonRpc\Data
+ * @package Datto\JsonRpc\Data
  */
 class Server
 {
@@ -48,7 +48,7 @@ class Server
      * Returns an array of response/error objects as a JSON string, when multiple queries are made.
      * Returns null, when no response is necessary.
      */
-    public function reply($json)
+    public static function reply($json)
     {
         $input = @json_decode($json, true);
 

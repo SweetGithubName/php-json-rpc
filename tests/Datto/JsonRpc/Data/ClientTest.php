@@ -22,7 +22,7 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Data;
+namespace Datto\JsonRpc\Data;
 
 use PHPUnit_Framework_TestCase;
 

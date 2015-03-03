@@ -24,7 +24,7 @@
 
 require_once dirname(__DIR__) . '/bootstrap.php';
 
-use JsonRpc\Transport\Local\Client;
+use Datto\JsonRpc\Transport\Local\Client;
 
 $client = new Client();
 $client->query(1, 'Example/Math/subtract', array(3, 2));

@@ -22,7 +22,7 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Transport;
+namespace Datto\JsonRpc\Transport;
 
 interface Client
 {

@@ -22,14 +22,14 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Data;
+namespace Datto\JsonRpc\Data;
 
 /**
  * Class Client
  *
  * @link http://www.jsonrpc.org/specification JSON-RPC 2.0 Specifications
  *
- * @package JsonRpc\Data
+ * @package Datto\JsonRpc\Data
  */
 class Client
 {

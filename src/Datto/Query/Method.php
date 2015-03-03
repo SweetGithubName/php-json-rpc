@@ -22,7 +22,7 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Query;
+namespace Datto\Query;
 
 class Method
 {

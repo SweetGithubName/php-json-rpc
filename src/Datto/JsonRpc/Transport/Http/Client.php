@@ -22,10 +22,10 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace JsonRpc\Transport\Http;
+namespace Datto\JsonRpc\Transport\Http;
 
-use JsonRpc\Data;
-use JsonRpc\Transport;
+use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Transport;
 
 class Client implements Transport\Client
 {
