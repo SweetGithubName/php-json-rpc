@@ -23,10 +23,10 @@ by editing two files:
 	ServerAdmin webmaster@localhost
 
 	# CHANGE THIS PATH #
-	DocumentRoot /home/username/Projects/datto-api/datto-api/examples/Http
+	DocumentRoot /home/username/Projects/datto/json-rpc/examples/Http
 
 	# CHANGE THIS PATH #
-	<Directory /home/username/Projects/datto-api/datto-api/examples/Http>
+	<Directory /home/username/Projects/datto/json-rpc/examples/Http>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride All
 		Require all granted
