@@ -26,7 +26,7 @@ class Server
      * Returns an array of response/error objects as a JSON string, when multiple queries are made.
      * Returns null, when no response is necessary.
      */
-    public function process($json)
+    public function reply($json)
     {
         $input = @json_decode($json, true);
 

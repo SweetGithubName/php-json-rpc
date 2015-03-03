@@ -9,6 +9,11 @@ class Client
     /** @var array */
     private $messages;
 
+    public function __construct()
+    {
+        $this->messages = array();
+    }
+
     public function query($id, $method, $arguments)
     {
         $this->messages[] = array(
@@ -41,6 +46,8 @@ class Client
         } else {
             $output = $this->messages;
         }
+
+        $this->messages = array();
 
         return json_encode($output);
     }

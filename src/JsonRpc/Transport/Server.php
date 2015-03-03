@@ -4,5 +4,5 @@ namespace JsonRpc\Transport;
 
 interface Server
 {
-    public function reply();
+    public static function reply();
 }

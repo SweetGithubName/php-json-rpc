@@ -32,7 +32,7 @@ class Client implements Transport\Client
     public function send()
     {
         $message = $this->client->encode();
-        $reply = $this->server->process($message);
+        $reply = $this->server->reply($message);
         return $this->client->decode($reply);
     }
 }

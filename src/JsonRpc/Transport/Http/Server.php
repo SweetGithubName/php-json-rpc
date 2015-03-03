@@ -12,31 +12,24 @@ use JsonRpc\Transport;
  *
  * @package JsonRpc\Transport\Http
  */
-class Server implements Transport\Server
+abstract class Server implements Transport\Server
 {
     private static $contentType = 'application/json';
 
-    /** @var Data\Server */
-    private $server;
-
-    public function __construct()
-    {
-        $this->server = new Data\Server();
-    }
-
-    public function reply()
+    public static function reply()
     {
         if (@$_SERVER['CONTENT_TYPE'] !== self::$contentType) {
             self::errorInvalidContentType();
         }
 
-        $contents = @file_get_contents('php://input');
+        $message = @file_get_contents('php://input');
 
-        if ($contents === false) {
+        if ($message === false) {
             self::errorInvalidBody();
         }
 
-        $output = $this->server->process($contents);
+        $server = new Data\Server();
+        $output = $server->reply($message);
 
         if ($output === null) {
             self::successNoContent();

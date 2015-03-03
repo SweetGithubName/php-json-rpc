@@ -179,7 +179,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     private function compare($input, $expectedJsonOutput)
     {
-        $actualJsonOutput = $this->server->process($input);
+        $actualJsonOutput = $this->server->reply($input);
 
         $expectedOutput = json_decode($expectedJsonOutput, true);
         $actualOutput = json_decode($actualJsonOutput, true);
