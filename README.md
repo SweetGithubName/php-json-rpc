@@ -5,7 +5,7 @@
 * Fully unit tested and fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification)
 * Minimalistic and free from external dependencies: works even without CURL
 * Modular, allowing you to make JSON-RPC calls over several transport mechanisms
-* Customizable, allowing you to choose your own system for evaluating the "method" strings
+* Customizable, allowing you to choose your own system for evaluating the JSON-RPC "method" strings
 
 ## Requirements
 
@@ -13,7 +13,7 @@
 
 ## License
 
-This package is released under an open-source license: [GPL-3.0](http://www.gnu.org/licenses/gpl-3.0.html)
+This package is released under an open-source license: [LGPL-3.0](https://www.gnu.org/licenses/lgpl-3.0.html)
 
 ## Installation
 
@@ -24,7 +24,7 @@ composer require datto/php-json-rpc
 ```
 
 Otherwise, simply copy the namespaced contents of the "src" directory into your
-own source directory.
+source directory.
 
 ## Examples
 
@@ -54,4 +54,4 @@ php phpunit.phar .
 
 ## Author
 
-[Spencer Mortensen](http://spencermortensen.com)
+[Spencer Mortensen](http://spencermortensen.com/contact/)
