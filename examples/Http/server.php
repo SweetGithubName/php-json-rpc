@@ -18,11 +18,12 @@
  * along with PHP JSON-RPC. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Spencer Mortensen <smortensen@datto.com>
+ * @author Matt Coleman <matt@datto.com>
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL-3.0
  * @copyright 2015 Datto, Inc.
  */
 
-require_once dirname(__DIR__) . '/bootstrap.php';
+require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 use Datto\JsonRpc\Transport\Http\Server;
 
