@@ -48,8 +48,7 @@ Server::reply();
 
 You can run the suite of unit tests like this:
 ```
-cd tests
-php phpunit.phar .
+vendor/bin/phpunit
 ```
 
 ## Author
