@@ -30,14 +30,19 @@ use Datto\JsonRpc\Transport;
 
 class Client extends Transport\Cli\Client implements Transport\Client
 {
-    public function __construct($hostname, $user, $command)
+    public function __construct($hostname, $user, $command, $keyfile = null)
     {
-        $sshCommand = sprintf(
-            'ssh -l %s %s %s',
+        $argumentFormat = '-l %s %s -- %s';
+        $arguments = array(
             escapeshellarg($user),
             escapeshellarg($hostname),
             escapeshellarg($command)
         );
+        if ($keyfile) {
+            $argumentFormat = '-i %s ' . $argumentFormat;
+            array_unshift($arguments, escapeshellarg($keyfile));
+        }
+        $sshCommand = vsprintf('ssh ' . $argumentFormat, $arguments);
         parent::__construct($sshCommand);
     }
 }
