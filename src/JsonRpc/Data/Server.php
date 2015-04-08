@@ -119,6 +119,16 @@ class Server
         return $replies;
     }
 
+    /**
+     * Processes an individual request, and prepares the response.
+     *
+     * @param array $request
+     * Single request object to be processed.
+     *
+     * @return array|null
+     * Returns a response object or an error object.
+     * Returns null when no response is necessary.
+     */
     private static function processRequest($request)
     {
         if (!is_array($request)) {
@@ -163,6 +173,30 @@ class Server
         return null;
     }
 
+    /**
+     * Processes a query request and prepares the response.
+     *
+     * @param mixed $id
+     * Client-supplied value that allows the client to associate the server response
+     * with the original query.
+     *
+     * @param string $name
+     * String value representing a method to invoke on the server:
+     * JSON-RPC intentionally leaves the internal format of this string unspecified.
+     *
+     * @param array $arguments
+     * Array of arguments that will be passed to the server method.
+     * This arguments array can be either a zero-indexed or an associative array:
+     *
+     * If the array is a zero-indexed array, then the elements of the array
+     * are passed to the method as sequential, positional arguments.
+     *
+     * If the array is an associative array, then the entire array is passed
+     * as a single argument to the server method.
+     *
+     * @return array
+     * Returns a response object or an error object.
+     */
     private static function processQuery($id, $name, $arguments)
     {
         $method = new Method($name, $arguments);
@@ -181,36 +215,88 @@ class Server
         return self::response($id, $result);
     }
 
+    /**
+     * Processes a notification. No response is necessary.
+     *
+     * @param string $name
+     * @param array $arguments
+     */
     private static function processNotification($name, $arguments)
     {
         $method = new Method($name, $arguments);
         $method->run();
     }
 
+    /**
+     * Returns an error object explaining that an error occurred while parsing
+     * the JSON text input.
+     *
+     * @return array
+     * Returns an error object.
+     */
     private static function errorJson()
     {
-        // An error occurred on the server while parsing the JSON text.
         return self::error(null, -32700, 'Parse error');
     }
 
+    /**
+     * Returns an error object explaining that the JSON input is not a valid
+     * request object.
+     *
+     * @return array
+     * Returns an error object.
+     */
     private static function errorRequest()
     {
-        // The JSON sent is not a valid Request object.
         return self::error(null, -32600, 'Invalid Request');
     }
 
+    /**
+     * Returns an error object explaining that the requested method is unknown.
+     *
+     * @param mixed $id
+     * Client-supplied value that allows the client to associate the server response
+     * with the original query.
+     *
+     * @return array
+     * Returns an error object.
+     */
     private static function errorMethod($id)
     {
-        // The requested method is not available.
         return self::error($id, -32601, 'Method not found');
     }
 
+    /**
+     * Returns an error object explaining that the method arguments were invalid.
+     *
+     * @param mixed $id
+     * Client-supplied value that allows the client to associate the server response
+     * with the original query.
+     *
+     * @return array
+     * Returns an error object.
+     */
     private static function errorArguments($id)
     {
-        // Invalid arguments.
         return self::error($id, -32602, 'Invalid params');
     }
 
+    /**
+     * Returns a properly-formatted error object.
+     *
+     * @param mixed $id
+     * Client-supplied value that allows the client to associate the server response
+     * with the original query.
+     *
+     * @param int $code
+     * Integer value representing the general type of error encountered.
+     *
+     * @param string $message
+     * Concise description of the error (ideally a single sentence).
+     *
+     * @return array
+     * Returns an error object.
+     */
     private static function error($id, $code, $message)
     {
         $error = array(
@@ -225,6 +311,19 @@ class Server
         );
     }
 
+    /**
+     * Returns a properly-formatted response object.
+     *
+     * @param mixed $id
+     * Client-supplied value that allows the client to associate the server response
+     * with the original query.
+     *
+     * @param mixed $result
+     * Return value from the server method, which will now be delivered to the user.
+     *
+     * @return array
+     * Returns a response object.
+     */
     private static function response($id, $result)
     {
         return array(

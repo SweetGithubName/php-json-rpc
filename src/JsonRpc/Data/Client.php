@@ -43,6 +43,11 @@ class Client
         $this->messages = array();
     }
 
+    /**
+     * @param mixed $id
+     * @param string $method
+     * @param array $arguments
+     */
     public function query($id, $method, $arguments)
     {
         $this->messages[] = array(
@@ -53,6 +58,10 @@ class Client
         );
     }
 
+    /**
+     * @param string $method
+     * @param array $arguments
+     */
     public function notification($method, $arguments)
     {
         $this->messages[] = array(
