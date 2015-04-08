@@ -48,7 +48,7 @@ Server::reply();
 
 You can run the suite of unit tests like this:
 ```
-vendor/bin/phpunit
+./vendor/bin/phpunit
 ```
 
 ## Author

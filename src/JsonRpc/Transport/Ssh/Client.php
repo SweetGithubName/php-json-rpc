@@ -28,21 +28,80 @@ namespace Datto\JsonRpc\Transport\Ssh;
 use Datto\JsonRpc\Data;
 use Datto\JsonRpc\Transport;
 
-class Client extends Transport\Cli\Client implements Transport\Client
+class Client implements Transport\Client
 {
-    public function __construct($hostname, $user, $command, $keyfile = null)
+    /** @var string */
+    protected $command;
+
+    /** @var Data\Client */
+    protected $client;
+
+    public function __construct($host, $user, $command, $keyfile = null)
     {
-        $argumentFormat = '-l %s %s -- %s';
-        $arguments = array(
-            escapeshellarg($user),
-            escapeshellarg($hostname),
-            escapeshellarg($command)
+        $this->command = self::getSshCommand($host, $user, $keyfile, $command);
+        $this->client = new Data\Client();
+    }
+
+    public function notification($method, $arguments)
+    {
+        $this->client->notification($method, $arguments);
+    }
+
+    public function query($id, $method, $arguments)
+    {
+        $this->client->query($id, $method, $arguments);
+    }
+
+    public function send()
+    {
+        $message = $this->client->encode();
+        $reply = $this->execute($this->command, $message);
+        return $this->client->decode($reply);
+    }
+
+    private static function execute($executable, $input)
+    {
+        $descriptorSpec = array(
+            array('pipe', 'r'),
+            array('pipe', 'w')
         );
-        if ($keyfile) {
-            $argumentFormat = '-i %s ' . $argumentFormat;
-            array_unshift($arguments, escapeshellarg($keyfile));
+
+        $process = proc_open($executable, $descriptorSpec, $pipes);
+
+        if (!is_resource($process)) {
+            return null;
         }
-        $sshCommand = vsprintf('ssh ' . $argumentFormat, $arguments);
-        parent::__construct($sshCommand);
+
+        $stdin = &$pipes[0];
+        fwrite($stdin, $input);
+        fclose($stdin);
+
+        $stdout = &$pipes[1];
+        $result = stream_get_contents($stdout);
+        fclose($stdout);
+
+        $exitCode = proc_close($process);
+
+        if ($exitCode !== 0) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    private static function getSshCommand($host, $user, $keyfile, $command)
+    {
+        $sshCommand = 'ssh';
+
+        if ($keyfile !== null) {
+            $sshCommand .= ' -i ' . escapeshellarg($keyfile);
+        }
+
+        $sshCommand .=
+            ' -l ' . escapeshellarg($user) .
+            ' ' . escapeshellarg($host) .
+            ' -- ' . escapeshellarg($command);
+
+        return $sshCommand;
     }
 }

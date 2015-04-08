@@ -23,12 +23,24 @@
  * @copyright 2015 Datto, Inc.
  */
 
-require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+namespace Datto\JsonRpc\Transport\Local;
 
-use Datto\JsonRpc\Transport\Cli\Client;
+use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Transport;
 
-$client = new Client('php ' . realpath(__DIR__ . '/server.php'));
-$client->query(1, 'Example/Math/subtract', array(3, 2));
-$reply = $client->send();
+/**
+ * Reads a JSON-RPC 2.0 request from STDIN and replies to STDOUT.
+ */
+abstract class Server implements Transport\Server
+{
+    public static function reply()
+    {
+        $message = @file_get_contents('php://stdin');
 
-echo json_encode($reply), "\n";
+        $reply = Data\Server::reply($message);
+
+        if ($reply !== null) {
+            echo $reply;
+        }
+    }
+}

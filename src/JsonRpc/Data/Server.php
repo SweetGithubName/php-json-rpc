@@ -211,16 +211,12 @@ class Server
         return self::error($id, -32602, 'Invalid params');
     }
 
-    private static function error($id, $code, $message, $data = null)
+    private static function error($id, $code, $message)
     {
         $error = array(
             'code' => $code,
             'message' => $message
         );
-
-        if ($data !== null) {
-            $error['data'] = $data;
-        }
 
         return array(
             'jsonrpc' => self::VERSION,

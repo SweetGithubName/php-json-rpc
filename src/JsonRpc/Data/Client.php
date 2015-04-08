@@ -83,6 +83,6 @@ class Client
 
     public function decode($reply)
     {
-        return @json_decode($reply);
+        return @json_decode($reply, true);
     }
 }

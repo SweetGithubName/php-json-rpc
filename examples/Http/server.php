@@ -23,7 +23,7 @@
  * @copyright 2015 Datto, Inc.
  */
 
-require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 use Datto\JsonRpc\Transport\Http\Server;
 

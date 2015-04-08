@@ -23,12 +23,12 @@
  * @copyright 2015 Datto, Inc.
  */
 
-require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 use Datto\JsonRpc\Transport\Local\Client;
 
 $client = new Client();
-$client->query(1, 'Example/Math/subtract', array(3, 2));
+$client->query(1, 'Datto/Tests/Example/Math/subtract', [3, 2]);
 $reply = $client->send();
 
 echo json_encode($reply), "\n";

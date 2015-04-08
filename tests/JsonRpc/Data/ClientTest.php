@@ -33,7 +33,8 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client = new Client();
         $client->notification('subtract', array(3, 2));
 
-        $this->compare($client, '{"jsonrpc":"2.0","method":"subtract","params":[3,2]}');
+        $this->compare($client,
+            '{"jsonrpc":"2.0","method":"subtract","params":[3,2]}');
     }
 
     public function testQuery()
@@ -41,7 +42,8 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client = new Client();
         $client->query(1, 'subtract', array(3, 2));
 
-        $this->compare($client, '{"jsonrpc":"2.0","id":1,"method":"subtract","params":[3,2]}');
+        $this->compare($client,
+            '{"jsonrpc":"2.0","id":1,"method":"subtract","params":[3,2]}');
     }
 
     public function testBatch()
@@ -50,7 +52,8 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client->query(1, 'subtract', array(3, 2));
         $client->notification('subtract', array(4, 3));
 
-        $this->compare($client, '[{"jsonrpc":"2.0","id":1,"method":"subtract","params":[3,2]},{"jsonrpc":"2.0","method":"subtract","params":[4,3]}]');
+        $this->compare($client,
+            '[{"jsonrpc":"2.0","id":1,"method":"subtract","params":[3,2]},{"jsonrpc":"2.0","method":"subtract","params":[4,3]}]');
     }
 
     public function testEmpty()
@@ -67,6 +70,17 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client->encode();
 
         $this->compare($client, null);
+    }
+
+    public function testDecode()
+    {
+        $reply = '{"jsonrpc": "2.0", "result": 1, "id": 1}';
+
+        $client = new Client();
+        $actualOutput = $client->decode($reply);
+        $expectedOutput = @json_decode($reply, true);
+
+        $this->assertSame($expectedOutput, $actualOutput);
     }
 
     private function compare(Client $client, $expectedJsonOutput)

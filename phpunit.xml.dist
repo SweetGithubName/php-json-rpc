@@ -2,7 +2,7 @@
 <phpunit bootstrap="./vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="json-rpc tests">
-            <directory>./tests</directory>
+            <directory>tests/JsonRpc</directory>
         </testsuite>
     </testsuites>
     <logging>

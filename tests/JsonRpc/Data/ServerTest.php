@@ -55,6 +55,15 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $this->compare($input, $output);
     }
 
+    public function testArgumentsInvalid()
+    {
+        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [], "id": 1}';
+
+        $output = '{"jsonrpc": "2.0", "error": {"code": -32602, "message": "Invalid params"}, "id": "1"}';
+
+        $this->compare($input, $output);
+    }
+
     public function testArgumentsNamedB()
     {
         $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": {"subtrahend": 2, "minuend": 3}, "id": 1}';
