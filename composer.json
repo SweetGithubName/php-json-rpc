@@ -1,6 +1,7 @@
 {
     "name": "datto/json-rpc",
-    "description": "Fully unit tested JSON-RPC 2.0 for PHP",
+    "description": "Fully unit-tested JSON-RPC 2.0 for PHP",
+    "version": "1.0.0",
     "keywords": ["php", "json", "rpc", "jsonrpc", "json-rpc", "php-json-rpc"],
     "homepage": "http://datto.com",
     "license": "LGPL-3.0",
@@ -30,8 +31,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Datto\\": "tests",
-            "Example\\": "tests/Example"
+            "Datto\\Tests\\": "tests"
         }
     }
 }

@@ -22,7 +22,7 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Example;
+namespace Datto\Tests\Example;
 
 class Math
 {
