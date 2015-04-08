@@ -18,11 +18,31 @@
  * along with PHP JSON-RPC. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Spencer Mortensen <smortensen@datto.com>
+ * @author Matt Coleman <matt@datto.com>
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL-3.0
  * @copyright 2015 Datto, Inc.
  */
 
-require_once __DIR__ . '/autoload.php';
+namespace Datto\JsonRpc\Transport\Ssh;
 
-spl_autoload_register('autoloadSource');
-spl_autoload_register('autoloadTests');
+use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Transport;
+
+class Client extends Transport\Cli\Client implements Transport\Client
+{
+    public function __construct($hostname, $user, $command, $keyfile = null)
+    {
+        $argumentFormat = '-l %s %s -- %s';
+        $arguments = array(
+            escapeshellarg($user),
+            escapeshellarg($hostname),
+            escapeshellarg($command)
+        );
+        if ($keyfile) {
+            $argumentFormat = '-i %s ' . $argumentFormat;
+            array_unshift($arguments, escapeshellarg($keyfile));
+        }
+        $sshCommand = vsprintf('ssh ' . $argumentFormat, $arguments);
+        parent::__construct($sshCommand);
+    }
+}

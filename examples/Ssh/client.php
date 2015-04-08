@@ -18,34 +18,18 @@
  * along with PHP JSON-RPC. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Spencer Mortensen <smortensen@datto.com>
+ * @author Matt Coleman <matt@datto.com>
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL-3.0
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Example;
+require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
-class Math
-{
-    public static function subtract()
-    {
-        $arguments = func_get_args();
+use Datto\JsonRpc\Transport\Ssh\Client;
 
-        // Named arguments
-        if (count($arguments) === 1) {
-            $values = array_shift($arguments);
-            return self::sub(@$values['minuend'], @$values['subtrahend']);
-        }
+$user = posix_getpwuid(posix_geteuid());
+$client = new Client('localhost', $user['name'], 'php ' . realpath(__DIR__ . '/../Cli/server.php'));
+$client->query(1, 'Example/Math/subtract', array(3, 2));
+$reply = $client->send();
 
-        // Positional arguments
-        return self::sub(@$arguments[0], @$arguments[1]);
-    }
-
-    private static function sub($a, $b)
-    {
-        if (!is_int($a) || !is_int($b)) {
-            return null;
-        }
-
-        return $a - $b;
-    }
-}
+echo json_encode($reply), "\n";

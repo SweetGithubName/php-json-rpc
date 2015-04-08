@@ -22,20 +22,8 @@
  * @copyright 2015 Datto, Inc.
  */
 
-function autoloadSource($className)
-{
-    $path = dirname(__DIR__) . '/src/' . strtr($className, '\\', '/') . '.php';
+require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
-    if (is_file($path)) {
-        require $path;
-    }
-}
+use Datto\JsonRpc\Transport\Cli\Server;
 
-function autoloadTests($className)
-{
-    $path = __DIR__ . '/' . strtr($className, '\\', '/') . '.php';
-
-    if (is_file($path)) {
-        require $path;
-    }
-}
+Server::reply();

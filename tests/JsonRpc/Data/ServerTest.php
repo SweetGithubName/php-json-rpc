@@ -100,9 +100,27 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $this->compare($input, $output);
     }
 
-    public function testInvalidRequest()
+    public function testInvalidMethod()
     {
-        $input = '{"jsonrpc": "2.0", "method": 1, "params": "bar"}';
+        $input = '{"jsonrpc": "2.0", "method": 1, "params": [1, 2]}';
+
+        $output = '{"jsonrpc": "2.0", "error": {"code": -32600, "message": "Invalid Request"}, "id": null}';
+
+        $this->compare($input, $output);
+    }
+
+    public function testInvalidParams()
+    {
+        $input = '{"jsonrpc": "2.0", "method": "foobar", "params": "bar"}';
+
+        $output = '{"jsonrpc": "2.0", "error": {"code": -32600, "message": "Invalid Request"}, "id": null}';
+
+        $this->compare($input, $output);
+    }
+
+    public function testInvalidId()
+    {
+        $input = '{"jsonrpc": "2.0", "method": "foobar", "params": [1, 2], "id": [1]}';
 
         $output = '{"jsonrpc": "2.0", "error": {"code": -32600, "message": "Invalid Request"}, "id": null}';
 

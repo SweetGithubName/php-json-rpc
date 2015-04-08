@@ -18,11 +18,17 @@
  * along with PHP JSON-RPC. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Spencer Mortensen <smortensen@datto.com>
+ * @author Matt Coleman <matt@datto.com>
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL-3.0
  * @copyright 2015 Datto, Inc.
  */
 
-require_once __DIR__ . '/autoload.php';
+require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
-spl_autoload_register('autoloadSource');
-spl_autoload_register('autoloadExamples');
+use Datto\JsonRpc\Transport\Cli\Client;
+
+$client = new Client('php ' . realpath(__DIR__ . '/server.php'));
+$client->query(1, 'Example/Math/subtract', array(3, 2));
+$reply = $client->send();
+
+echo json_encode($reply), "\n";

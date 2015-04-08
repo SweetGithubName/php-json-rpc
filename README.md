@@ -3,7 +3,7 @@
 ## Features
 
 * Fully unit tested and fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification)
-* Minimalistic and free from external dependencies: works even without CURL
+* Minimalistic: SSH is the only external dependency, and is only required for the SSH client
 * Modular, allowing you to make JSON-RPC calls over several transport mechanisms
 * Customizable, allowing you to choose your own system for evaluating the JSON-RPC "method" strings
 
@@ -48,8 +48,7 @@ Server::reply();
 
 You can run the suite of unit tests like this:
 ```
-cd tests
-php phpunit.phar .
+vendor/bin/phpunit
 ```
 
 ## Author
