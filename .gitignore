@@ -1,5 +1,6 @@
-composer.phar
+.git*
+.idea*
+.source
 composer.lock
 vendor/
-phpunit.xml
 coverage/
