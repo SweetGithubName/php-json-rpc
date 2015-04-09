@@ -25,7 +25,7 @@
 namespace Datto\JsonRpc\Transport\Http;
 
 use Datto\JsonRpc\Transport;
-use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Message;
 use Datto\JsonRpc\Method;
 
 /**
@@ -59,7 +59,7 @@ class Server implements Transport\Server
             self::errorInvalidBody();
         }
 
-        $server = new Data\Server($this->method);
+        $server = new Message\Server($this->method);
         $reply = $server->reply($message);
 
         if ($reply === null) {

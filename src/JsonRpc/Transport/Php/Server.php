@@ -18,40 +18,49 @@
  * along with PHP JSON-RPC. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Spencer Mortensen <smortensen@datto.com>
+ * @author Matt Coleman <matt@datto.com>
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL-3.0
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto;
+namespace Datto\JsonRpc\Transport\Php;
 
-class Method implements JsonRpc\Method
+use Datto\JsonRpc\Transport;
+use Datto\JsonRpc\Message;
+use Datto\JsonRpc\Method;
+
+/**
+ * Reads a JSON-RPC 2.0 request from STDIN and replies to STDOUT.
+ */
+class Server implements Transport\Server
 {
-    /**
-     * @param string $name
-     *
-     * @return callable|null
-     */
-    public function getCallable($name)
+    /** @var Method */
+    private $method;
+
+    public function __construct(Method $method)
     {
-        if (!self::isValidName($name)) {
-            return null;
-        }
-
-        $parts = explode('/', $name);
-        $method = array_pop($parts);
-        $class = '\\' . implode('\\', $parts);
-
-        return array($class, $method);
+        $this->method = $method;
     }
 
-    private static function isValidName($input)
+    public function reply()
     {
-        if (!is_string($input)) {
-            return false;
+        $message = @file_get_contents('php://stdin');
+
+        if ($message === false) {
+            self::errorInvalidBody();
         }
 
-        $validPattern = '~^[a-zA-Z0-9]+(/[a-zA-Z0-9]+)+$~';
+        $server = new Message\Server($this->method);
+        $reply = $server->reply($message);
 
-        return preg_match($validPattern, $input) === 1;
+        if ($reply !== null) {
+            echo $reply;
+        }
+    }
+
+    private static function errorInvalidBody()
+    {
+        @file_put_contents('php://stderr', 'Invalid body');
+        exit(1);
     }
 }

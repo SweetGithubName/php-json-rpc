@@ -23,44 +23,15 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto\JsonRpc\Transport\Local;
+require __DIR__ . '/../../vendor/autoload.php';
 
-use Datto\JsonRpc\Transport;
-use Datto\JsonRpc\Data;
-use Datto\JsonRpc\Method;
+use Datto\Tests\Example\Method;
+use Datto\JsonRpc\Transport\Php\Client;
 
-/**
- * Reads a JSON-RPC 2.0 request from STDIN and replies to STDOUT.
- */
-class Server implements Transport\Server
-{
-    /** @var Method */
-    private $method;
+$method = new Method();
+$client = new Client($method);
 
-    public function __construct(Method $method)
-    {
-        $this->method = $method;
-    }
+$client->query(1, 'Datto/Tests/Example/Math/subtract', [3, 2]);
+$reply = $client->send();
 
-    public function reply()
-    {
-        $message = @file_get_contents('php://stdin');
-
-        if ($message === false) {
-            self::errorInvalidBody();
-        }
-
-        $server = new Data\Server($this->method);
-        $reply = $server->reply($message);
-
-        if ($reply !== null) {
-            echo $reply;
-        }
-    }
-
-    private static function errorInvalidBody()
-    {
-        @file_put_contents('php://stderr', 'Invalid body');
-        exit(1);
-    }
-}
+echo json_encode($reply), "\n";

@@ -2,10 +2,12 @@
 
 ## Features
 
-* Fully unit tested and fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification)
-* Minimalistic: SSH is the only external dependency, and is only required for the SSH client
-* Modular, allowing you to make JSON-RPC calls over several transport mechanisms
-* Customizable, allowing you to choose your own system for evaluating the JSON-RPC "method" strings
+* Fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification)
+* Fully unit-tested (100% code coverage)
+* Lightweight and flexible; works even when CURL is not installed
+* Customizable
+  * You can choose your own system for interpreting the JSON-RPC method strings
+  * You can make JSON-RPC requests over HTTP or SSH, or locally through PHP
 
 ## Requirements
 
@@ -23,30 +25,33 @@ management system, you can install the source code like this:
 composer require datto/php-json-rpc
 ```
 
-Otherwise, simply copy the namespaced contents of the "src" directory into your
-source directory.
-
 ## Examples
 
 ### Client
 
 ```php
-$client = new Client();
-$client->query(1, 'Example/Math/subtract', array(3, 2));
+$method = new Method();
+$client = new Client($method);
+
+$client->query(1, 'Datto/Tests/Example/Math/subtract', [3, 2]);
+
 $reply = $client->send();
 ```
 
 ### Server
 
 ```php
-Server::reply();
+$method = new Method();
+$server = new Server($method);
+
+$server->reply();
 ```
 
-*See the "examples" directory for ready-to-use examples.*
+*See the "examples" folder for ready-to-use examples.*
 
 ## Unit tests
 
-You can run the suite of unit tests like this:
+You can run the suite of unit tests from the project directory like this:
 ```
 ./vendor/bin/phpunit
 ```

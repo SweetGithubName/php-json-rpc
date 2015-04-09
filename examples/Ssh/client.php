@@ -28,8 +28,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 use Datto\JsonRpc\Transport\Ssh\Client;
 
 $server = 'localhost';
-$uid = posix_geteuid();
-$username = posix_getpwuid($uid)['name'];
+$username = posix_getpwuid(posix_geteuid())['name'];
 $command = 'php ' . realpath(__DIR__ . '/../Ssh/server.php');
 
 $client = new Client($server, $username, $command);

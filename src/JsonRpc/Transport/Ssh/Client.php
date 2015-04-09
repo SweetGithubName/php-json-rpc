@@ -25,7 +25,7 @@
 
 namespace Datto\JsonRpc\Transport\Ssh;
 
-use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Message;
 use Datto\JsonRpc\Transport;
 
 class Client implements Transport\Client
@@ -33,13 +33,13 @@ class Client implements Transport\Client
     /** @var string */
     protected $command;
 
-    /** @var Data\Client */
+    /** @var Message\Client */
     protected $client;
 
     public function __construct($host, $user, $command, $keyfile = null)
     {
         $this->command = self::getSshCommand($host, $user, $keyfile, $command);
-        $this->client = new Data\Client();
+        $this->client = new Message\Client();
     }
 
     public function notification($method, $arguments)

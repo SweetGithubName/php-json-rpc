@@ -22,23 +22,24 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto\JsonRpc\Transport\Http;
+namespace Datto\JsonRpc\Transport\Php;
 
-use Datto\JsonRpc\Message;
 use Datto\JsonRpc\Transport;
+use Datto\JsonRpc\Message;
+use Datto\JsonRpc\Method;
 
 class Client implements Transport\Client
 {
-    /** @var string */
-    private $uri;
-
     /** @var Message\Client */
     private $client;
 
-    public function __construct($uri)
+    /** @var Message\Server */
+    private $server;
+
+    public function __construct(Method $method)
     {
-        $this->uri = $uri;
         $this->client = new Message\Client();
+        $this->server = new Message\Server($method);
     }
 
     public function notification($method, $arguments)
@@ -54,33 +55,7 @@ class Client implements Transport\Client
     public function send()
     {
         $message = $this->client->encode();
-        $reply = $this->execute($message, 'POST', 'application/json');
+        $reply = $this->server->reply($message);
         return $this->client->decode($reply);
-    }
-
-    private function execute($content, $method, $contentType)
-    {
-        $contentLength = strlen($content);
-
-        $header = "Content-Type: {$contentType}\r\n" .
-            "Content-Length: {$contentLength}\r\n" .
-            "Accept: {$contentType}\r\n";
-
-        $options = array(
-            'http' => array(
-                'method' => $method,
-                'header' => $header,
-                'content' => $content
-            )
-        );
-
-        $context = stream_context_create($options);
-        $reply = @file_get_contents($this->uri, false, $context);
-
-        if ($reply === false) {
-            return null;
-        }
-
-        return $reply;
     }
 }

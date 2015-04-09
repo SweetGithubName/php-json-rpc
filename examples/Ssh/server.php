@@ -25,8 +25,8 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use Datto\Method;
-use Datto\JsonRpc\Transport\Local\Server;
+use Datto\Tests\Example\Method;
+use Datto\JsonRpc\Transport\Php\Server;
 
 $method = new Method();
 $server = new Server($method);
