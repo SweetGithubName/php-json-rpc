@@ -37,6 +37,8 @@ $client->query(1, 'Datto/Tests/Example/Math/subtract', [3, 2]);
 $reply = $client->send();
 ```
 
+*See the "examples" folder for ready-to-use examples.*
+
 ### Server
 
 ```php

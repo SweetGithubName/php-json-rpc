@@ -1,6 +1,6 @@
 .git*
-.idea*
 .source
+.idea/
 composer.lock
 vendor/
 coverage/
