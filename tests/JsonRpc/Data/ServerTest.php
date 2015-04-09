@@ -25,6 +25,7 @@
 namespace Datto\JsonRpc\Data;
 
 use PHPUnit_Framework_TestCase;
+use Datto\Method;
 
 class ServerTest extends PHPUnit_Framework_TestCase
 {
@@ -220,7 +221,10 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     private function compare($input, $expectedJsonOutput)
     {
-        $actualJsonOutput = Server::reply($input);
+        $method = new Method();
+        $server = new Server($method);
+
+        $actualJsonOutput = $server->reply($input);
 
         $expectedOutput = json_decode($expectedJsonOutput, true);
         $actualOutput = json_decode($actualJsonOutput, true);

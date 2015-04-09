@@ -25,6 +25,10 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+use Datto\Method;
 use Datto\JsonRpc\Transport\Http\Server;
 
-Server::reply();
+$method = new Method();
+$server = new Server($method);
+
+$server->reply();

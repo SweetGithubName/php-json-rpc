@@ -25,22 +25,42 @@
 
 namespace Datto\JsonRpc\Transport\Local;
 
-use Datto\JsonRpc\Data;
 use Datto\JsonRpc\Transport;
+use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Method;
 
 /**
  * Reads a JSON-RPC 2.0 request from STDIN and replies to STDOUT.
  */
-abstract class Server implements Transport\Server
+class Server implements Transport\Server
 {
-    public static function reply()
+    /** @var Method */
+    private $method;
+
+    public function __construct(Method $method)
+    {
+        $this->method = $method;
+    }
+
+    public function reply()
     {
         $message = @file_get_contents('php://stdin');
 
-        $reply = Data\Server::reply($message);
+        if ($message === false) {
+            self::errorInvalidBody();
+        }
+
+        $server = new Data\Server($this->method);
+        $reply = $server->reply($message);
 
         if ($reply !== null) {
             echo $reply;
         }
+    }
+
+    private static function errorInvalidBody()
+    {
+        @file_put_contents('php://stderr', 'Invalid body');
+        exit(1);
     }
 }

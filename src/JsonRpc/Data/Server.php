@@ -24,7 +24,7 @@
 
 namespace Datto\JsonRpc\Data;
 
-use Datto\Query\Method;
+use Datto\JsonRpc\Method;
 
 /**
  * Class Server
@@ -37,6 +37,17 @@ class Server
 {
     const VERSION = '2.0';
 
+    /** @var Method */
+    private $method;
+
+    /**
+     * @param Method $method
+     */
+    public function __construct(Method $method)
+    {
+        $this->method = $method;
+    }
+
     /**
      * Processes the user input, and prepares a response (if necessary).
      *
@@ -48,11 +59,11 @@ class Server
      * Returns an array of response/error objects as a JSON string, when multiple queries are made.
      * Returns null, when no response is necessary.
      */
-    public static function reply($json)
+    public function reply($json)
     {
         $input = @json_decode($json, true);
 
-        $output = self::processInput($input);
+        $output = $this->processInput($input);
 
         if ($output === null) {
             return null;
@@ -72,7 +83,7 @@ class Server
      * Returns an array of response/error objects when multiple queries are made.
      * Returns null when no response is necessary.
      */
-    private static function processInput($input)
+    private function processInput($input)
     {
         if (!is_array($input)) {
             return self::errorJson();
@@ -83,10 +94,10 @@ class Server
         }
 
         if (isset($input['jsonrpc'])) {
-            return self::processRequest($input);
+            return $this->processRequest($input);
         }
 
-        return self::processBatchRequests($input);
+        return $this->processBatchRequests($input);
     }
 
     /**
@@ -100,12 +111,12 @@ class Server
      * Returns an array of response/error objects when multiple queries are made.
      * Returns null when no response is necessary.
      */
-    private static function processBatchRequests($input)
+    private function processBatchRequests($input)
     {
         $replies = array();
 
         foreach ($input as $request) {
-            $reply = self::processRequest($request);
+            $reply = $this->processRequest($request);
 
             if ($reply !== null) {
                 $replies[] = $reply;
@@ -129,7 +140,7 @@ class Server
      * Returns a response object or an error object.
      * Returns null when no response is necessary.
      */
-    private static function processRequest($request)
+    private function processRequest($request)
     {
         if (!is_array($request)) {
             return self::errorRequest();
@@ -166,10 +177,10 @@ class Server
                 return self::errorRequest();
             }
 
-            return self::processQuery($id, $method, $arguments);
+            return $this->processQuery($id, $method, $arguments);
         }
 
-        self::processNotification($method, $arguments);
+        $this->processNotification($method, $arguments);
         return null;
     }
 
@@ -180,7 +191,7 @@ class Server
      * Client-supplied value that allows the client to associate the server response
      * with the original query.
      *
-     * @param string $name
+     * @param string $method
      * String value representing a method to invoke on the server:
      * JSON-RPC intentionally leaves the internal format of this string unspecified.
      *
@@ -197,15 +208,15 @@ class Server
      * @return array
      * Returns a response object or an error object.
      */
-    private static function processQuery($id, $name, $arguments)
+    private function processQuery($id, $method, $arguments)
     {
-        $method = new Method($name, $arguments);
+        $callable = $this->method->getCallable($method);
 
-        if (!$method->isValid()) {
+        if (!is_callable($callable)) {
             return self::errorMethod($id);
         }
 
-        $result = $method->run();
+        $result = self::run($callable, $arguments);
 
         // A callable must return null when invoked with invalid arguments
         if ($result === null) {
@@ -218,13 +229,64 @@ class Server
     /**
      * Processes a notification. No response is necessary.
      *
-     * @param string $name
+     * @param string $method
+     * String value representing a method to invoke on the server
+     *
      * @param array $arguments
+     * Array of arguments that will be passed to the method.
      */
-    private static function processNotification($name, $arguments)
+    private function processNotification($method, $arguments)
     {
-        $method = new Method($name, $arguments);
-        $method->run();
+        $callable = $this->method->getCallable($method);
+
+        if (is_callable($callable)) {
+            self::run($callable, $arguments);
+        }
+    }
+
+    /**
+     * Executes a callable with the supplied arguments, and returns the result.
+     *
+     * @param callable $callable
+     * A callable that will be executed.
+     *
+     * @param array $arguments
+     * Array of arguments that will be passed to the callable.
+     *
+     * @return mixed
+     * Returns the return value from the callable.
+     * Returns null on error.
+     */
+    private static function run($callable, $arguments)
+    {
+        if (self::isPositionalArguments($arguments)) {
+            return call_user_func_array($callable, $arguments);
+        }
+
+        return call_user_func($callable, $arguments);
+    }
+
+    /**
+     * Returns true if the argument array is a zero-indexed list of positional
+     * arguments, or false if the argument array is a set of named arguments.
+     *
+     * @param array $arguments
+     * Array of arguments.
+     *
+     * @return bool
+     * Returns true iff the arguments array is zero-indexed.
+     */
+    private static function isPositionalArguments($arguments)
+    {
+        $i = 0;
+
+        foreach ($arguments as $key => $value) {
+            if ($key !== $i++) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

@@ -24,8 +24,9 @@
 
 namespace Datto\JsonRpc\Transport\Http;
 
-use Datto\JsonRpc\Data;
 use Datto\JsonRpc\Transport;
+use Datto\JsonRpc\Data;
+use Datto\JsonRpc\Method;
 
 /**
  * Class Server
@@ -34,11 +35,19 @@ use Datto\JsonRpc\Transport;
  *
  * @package Datto\JsonRpc\Transport\Http
  */
-abstract class Server implements Transport\Server
+class Server implements Transport\Server
 {
     private static $contentType = 'application/json';
 
-    public static function reply()
+    /** @var Method */
+    private $method;
+
+    public function __construct(Method $method)
+    {
+        $this->method = $method;
+    }
+
+    public function reply()
     {
         if (@$_SERVER['CONTENT_TYPE'] !== self::$contentType) {
             self::errorInvalidContentType();
@@ -50,7 +59,8 @@ abstract class Server implements Transport\Server
             self::errorInvalidBody();
         }
 
-        $reply = Data\Server::reply($message);
+        $server = new Data\Server($this->method);
+        $reply = $server->reply($message);
 
         if ($reply === null) {
             self::successNoContent();

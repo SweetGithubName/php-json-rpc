@@ -25,9 +25,12 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+use Datto\Method;
 use Datto\JsonRpc\Transport\Local\Client;
 
-$client = new Client();
+$method = new Method();
+$client = new Client($method);
+
 $client->query(1, 'Datto/Tests/Example/Math/subtract', [3, 2]);
 $reply = $client->send();
 

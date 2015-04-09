@@ -22,40 +22,36 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto\JsonRpc\Transport\Local;
+namespace Datto;
 
-use Datto\JsonRpc\Transport;
-use Datto\JsonRpc\Data;
-use Datto\JsonRpc\Method;
-
-class Client implements Transport\Client
+class Method implements JsonRpc\Method
 {
-    /** @var Data\Client */
-    private $client;
-
-    /** @var Data\Server */
-    private $server;
-
-    public function __construct(Method $method)
+    /**
+     * @param string $name
+     *
+     * @return callable|null
+     */
+    public function getCallable($name)
     {
-        $this->client = new Data\Client();
-        $this->server = new Data\Server($method);
+        if (!self::isValidName($name)) {
+            return null;
+        }
+
+        $parts = explode('/', $name);
+        $method = array_pop($parts);
+        $class = '\\' . implode('\\', $parts);
+
+        return array($class, $method);
     }
 
-    public function notification($method, $arguments)
+    private static function isValidName($input)
     {
-        $this->client->notification($method, $arguments);
-    }
+        if (!is_string($input)) {
+            return false;
+        }
 
-    public function query($id, $method, $arguments)
-    {
-        $this->client->query($id, $method, $arguments);
-    }
+        $validPattern = '~^[a-zA-Z0-9]+(/[a-zA-Z0-9]+)+$~';
 
-    public function send()
-    {
-        $message = $this->client->encode();
-        $reply = $this->server->reply($message);
-        return $this->client->decode($reply);
+        return preg_match($validPattern, $input) === 1;
     }
 }

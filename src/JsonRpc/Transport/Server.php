@@ -26,5 +26,5 @@ namespace Datto\JsonRpc\Transport;
 
 interface Server
 {
-    public static function reply();
+    public function reply();
 }
