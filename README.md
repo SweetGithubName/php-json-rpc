@@ -2,8 +2,7 @@
 
 ## Features
 
-* Fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification)
-* 100% unit-test coverage
+* Fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification) with 100% unit-test coverage
 * Customizable:
   * You can make JSON-RPC requests over HTTP or SSH, or locally through PHP
   * You can choose your own system for interpreting the JSON-RPC method strings
