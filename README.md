@@ -3,11 +3,11 @@
 ## Features
 
 * Fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification)
-* Fully unit-tested (100% code coverage)
-* Lightweight and flexible; works even when CURL is not installed
-* Customizable
-  * You can choose your own system for interpreting the JSON-RPC method strings
+* 100% unit-test coverage
+* Customizable:
   * You can make JSON-RPC requests over HTTP or SSH, or locally through PHP
+  * You can choose your own system for interpreting the JSON-RPC method strings
+* Lightweight and flexible; works even when CURL is not installed
 
 ## Requirements
 
