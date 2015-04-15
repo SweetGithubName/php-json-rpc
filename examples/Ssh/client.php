@@ -27,7 +27,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 use Datto\JsonRpc\Transport\Ssh\Client;
 
-
 $server = 'localhost';
 $user = posix_getpwuid(posix_geteuid());
 $username = $user['name'];
