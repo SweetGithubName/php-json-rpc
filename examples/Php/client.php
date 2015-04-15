@@ -32,6 +32,6 @@ $method = new Method();
 $client = new Client($method);
 
 $client->query(1, 'Datto/Tests/Example/Math/subtract', [3, 2]);
-$reply = $client->send();
 
+$reply = $client->send();
 echo json_encode($reply), "\n";

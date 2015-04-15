@@ -27,12 +27,16 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 use Datto\JsonRpc\Transport\Ssh\Client;
 
+
 $server = 'localhost';
-$username = posix_getpwuid(posix_geteuid())['name'];
-$command = 'php ' . realpath(__DIR__ . '/../Ssh/server.php');
+$user = posix_getpwuid(posix_geteuid());
+$username = $user['name'];
+$scriptPath = realpath(__DIR__ . '/../Ssh/server.php');
+$command = 'php ' . escapeshellarg($scriptPath);
 
 $client = new Client($server, $username, $command);
-$client->query(1, 'Datto/Tests/Example/Math/subtract', array(3, 2));
-$reply = $client->send();
 
+$client->query(1, 'Datto/Tests/Example/Math/subtract', array(3, 2));
+
+$reply = $client->send();
 echo json_encode($reply), "\n";
