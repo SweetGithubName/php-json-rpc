@@ -31,7 +31,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 {
     public function testArgumentsPositionalA()
     {
-        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [3, 2], "id": 1}';
+        $input = '{"jsonrpc": "2.0", "method": "Math/subtract", "params": [3, 2], "id": 1}';
 
         $output = '{"jsonrpc": "2.0", "result": 1, "id": 1}';
 
@@ -40,7 +40,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     public function testArgumentsPositionalB()
     {
-        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [2, 3], "id": 1}';
+        $input = '{"jsonrpc": "2.0", "method": "Math/subtract", "params": [2, 3], "id": 1}';
 
         $output = '{"jsonrpc": "2.0", "result": -1, "id": 1}';
 
@@ -49,7 +49,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     public function testArgumentsNamedA()
     {
-        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": {"minuend": 3, "subtrahend": 2}, "id": 1}';
+        $input = '{"jsonrpc": "2.0", "method": "Math/subtract", "params": {"minuend": 3, "subtrahend": 2}, "id": 1}';
 
         $output = '{"jsonrpc": "2.0", "result": 1, "id": 1}';
 
@@ -58,7 +58,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     public function testArgumentsInvalid()
     {
-        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [], "id": 1}';
+        $input = '{"jsonrpc": "2.0", "method": "Math/subtract", "params": [], "id": 1}';
 
         $output = '{"jsonrpc": "2.0", "error": {"code": -32602, "message": "Invalid params"}, "id": "1"}';
 
@@ -67,7 +67,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     public function testArgumentsNamedB()
     {
-        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": {"subtrahend": 2, "minuend": 3}, "id": 1}';
+        $input = '{"jsonrpc": "2.0", "method": "Math/subtract", "params": {"subtrahend": 2, "minuend": 3}, "id": 1}';
 
         $output = '{"jsonrpc": "2.0", "result": 1, "id": 1}';
 
@@ -76,7 +76,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     public function testNotificationArguments()
     {
-        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [3, 2]}';
+        $input = '{"jsonrpc": "2.0", "method": "Math/subtract", "params": [3, 2]}';
 
         $output = 'null';
 
@@ -85,7 +85,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     public function testNotification()
     {
-        $input = '{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract"}';
+        $input = '{"jsonrpc": "2.0", "method": "Math/subtract"}';
 
         $output = 'null';
 
@@ -94,7 +94,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     public function testUndefinedMethod()
     {
-        $input ='{"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/undefined", "id": "1"}';
+        $input ='{"jsonrpc": "2.0", "method": "Math/undefined", "id": "1"}';
 
         $output = '{"jsonrpc": "2.0", "error": {"code": -32601, "message": "Method not found"}, "id": "1"}';
 
@@ -140,7 +140,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
     public function testBatchInvalidJson()
     {
         $input = ' [
-            {"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [1, 2, 4], "id": "1"},
+            {"jsonrpc": "2.0", "method": "Math/subtract", "params": [1, 2, 4], "id": "1"},
             {"jsonrpc": "2.0", "method"
         ]';
 
@@ -192,8 +192,8 @@ class ServerTest extends PHPUnit_Framework_TestCase
     public function testBatch()
     {
         $input = '[
-            {"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [1, -1], "id": "1"},
-            {"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [1, -1]},
+            {"jsonrpc": "2.0", "method": "Math/subtract", "params": [1, -1], "id": "1"},
+            {"jsonrpc": "2.0", "method": "Math/subtract", "params": [1, -1]},
             {"foo": "boo"},
             {"jsonrpc": "2.0", "method": "undefined", "params": {"name": "myself"}, "id": "5"}
         ]';
@@ -210,8 +210,8 @@ class ServerTest extends PHPUnit_Framework_TestCase
     public function testBatchNotifications()
     {
         $input = '[
-            {"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [4, 2]},
-            {"jsonrpc": "2.0", "method": "Datto/Tests/Example/Math/subtract", "params": [3, 7]}
+            {"jsonrpc": "2.0", "method": "Math/subtract", "params": [4, 2]},
+            {"jsonrpc": "2.0", "method": "Math/subtract", "params": [3, 7]}
         ]';
 
         $output = 'null';

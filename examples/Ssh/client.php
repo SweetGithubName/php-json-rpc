@@ -35,7 +35,7 @@ $command = 'php ' . escapeshellarg($scriptPath);
 
 $client = new Client($server, $username, $command);
 
-$client->query(1, 'Datto/Tests/Example/Math/subtract', array(3, 2));
+$client->query(1, 'Math/subtract', array(3, 2));
 
 $reply = $client->send();
 echo json_encode($reply), "\n";

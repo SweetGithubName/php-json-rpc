@@ -28,6 +28,8 @@ use Datto\JsonRpc;
 
 class Method implements JsonRpc\Method
 {
+    private static $namespace = '\\Datto\\Tests\\Example\\';
+
     /**
      * @param string $name
      *
@@ -41,7 +43,7 @@ class Method implements JsonRpc\Method
 
         $parts = explode('/', $name);
         $method = array_pop($parts);
-        $class = '\\' . implode('\\', $parts);
+        $class = self::$namespace . implode('\\', $parts);
 
         return array($class, $method);
     }

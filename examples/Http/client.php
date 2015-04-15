@@ -29,7 +29,7 @@ use Datto\JsonRpc\Transport\Http\Client;
 
 $client = new Client('http://api/server.php');
 
-$client->query(1, 'Datto/Tests/Example/Math/subtract', array(3, 2));
+$client->query(1, 'Math/subtract', array(3, 2));
 
 $reply = $client->send();
 echo json_encode($reply), "\n";
