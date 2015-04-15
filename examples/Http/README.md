@@ -3,7 +3,7 @@
 This example shows how you might create a web API, where clients communicate
 with a remote API server over HTTP.
 
-In order to run the example, you'll need support for the URL "http://api/".
+In order to run the example, you'll need support for the URL "http://php-json-rpc/".
 If you're using Linux in your development environment, you can set this up
 by editing two files:
 
@@ -11,15 +11,15 @@ by editing two files:
 
 `sudo gedit /etc/hosts`
 ```
-127.0.0.1   localhost api
+127.0.0.1   localhost php-json-rpc
 ```
 
 ## File 2:
 
-`sudo gedit /etc/apache2/sites-available/api.conf`
+`sudo gedit /etc/apache2/sites-available/php-json-rpc.conf`
 ```
  <VirtualHost *:80>
-	ServerName api
+	ServerName php-json-rpc
 	ServerAdmin webmaster@localhost
 
 	# CHANGE THIS PATH #
