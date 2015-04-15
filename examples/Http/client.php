@@ -27,7 +27,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 use Datto\JsonRpc\Transport\Http\Client;
 
-$client = new Client('http://api/server.php');
+$client = new Client('http://php-json-rpc/server.php');
 
 $client->query(1, 'Math/subtract', array(3, 2));
 
