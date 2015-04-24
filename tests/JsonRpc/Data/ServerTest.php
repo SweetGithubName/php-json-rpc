@@ -25,7 +25,7 @@
 namespace Datto\JsonRpc\Message;
 
 use PHPUnit_Framework_TestCase;
-use Datto\Tests\Example\Method;
+use Datto\Tests\Example\Stateless\Method;
 
 class ServerTest extends PHPUnit_Framework_TestCase
 {

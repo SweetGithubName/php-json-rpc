@@ -22,40 +22,43 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto\Tests\Example;
+namespace Datto\Tests\Example\Stateful;
 
-use Datto\JsonRpc;
-
-class Method implements JsonRpc\Method
+class Math
 {
-    private static $namespace = '\\Datto\\Tests\\Example\\';
+    public function subtract()
+    {
+        $arguments = func_get_args();
+
+        if (count($arguments) === 1) {
+            // Named arguments
+            $a = @$arguments[0]['minuend'];
+            $b = @$arguments[0]['subtrahend'];
+        } else {
+            // Positional arguments
+            $a = @$arguments[0];
+            $b = @$arguments[1];
+        }
+
+        return self::sub($a, $b);
+    }
 
     /**
-     * @param string $name
+     * Returns the value $a - $b
      *
-     * @return callable|null
+     * @param mixed $a
+     * @param mixed $b
+     *
+     * @return int|null
+     * Returns $a - $b if both $a and $b are integers
+     * Returns null otherwise
      */
-    public function getCallable($name)
+    private static function sub($a, $b)
     {
-        if (!self::isValidName($name)) {
+        if (!is_int($a) || !is_int($b)) {
             return null;
         }
 
-        $parts = explode('/', $name);
-        $method = array_pop($parts);
-        $class = self::$namespace . implode('\\', $parts);
-
-        return array($class, $method);
-    }
-
-    private static function isValidName($input)
-    {
-        if (!is_string($input)) {
-            return false;
-        }
-
-        $validPattern = '~^[a-zA-Z0-9]+(/[a-zA-Z0-9]+)+$~';
-
-        return preg_match($validPattern, $input) === 1;
+        return $a - $b;
     }
 }

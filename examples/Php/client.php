@@ -25,13 +25,13 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use Datto\Tests\Example\Method;
+use Datto\Tests\Example\Stateless\Method;
 use Datto\JsonRpc\Transport\Php\Client;
 
 $method = new Method();
 $client = new Client($method);
 
-$client->query(1, 'Math/subtract', [3, 2]);
+$client->query(1, 'Math/subtract', array("minuend" => 3, "subtrahend" => 2));
 
 $reply = $client->send();
 echo json_encode($reply), "\n";

@@ -22,30 +22,48 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto\Tests\Example;
+namespace Datto\Tests\Example\Stateful;
 
-class Math
+use Datto\JsonRpc;
+
+class Method implements JsonRpc\Method
 {
-    public static function subtract()
+    /** @var Math */
+    private $math;
+
+    public function __construct()
     {
-        $arguments = func_get_args();
-
-        // Named arguments
-        if (count($arguments) === 1) {
-            $values = array_shift($arguments);
-            return self::sub(@$values['minuend'], @$values['subtrahend']);
-        }
-
-        // Positional arguments
-        return self::sub(@$arguments[0], @$arguments[1]);
+        $this->math = new Math();
     }
 
-    private static function sub($a, $b)
+    /**
+     * @param string $name
+     *
+     * @return callable|null
+     */
+    public function getCallable($name)
     {
-        if (!is_int($a) || !is_int($b)) {
+        if (!self::isValidName($name)) {
             return null;
         }
 
-        return $a - $b;
+        return array($this->math, $name);
+    }
+
+    /**
+     * @param mixed $input
+     *
+     * @return bool
+     * Returns true if and only if the input is a valid method name
+     */
+    private static function isValidName($input)
+    {
+        if (!is_string($input)) {
+            return false;
+        }
+
+        $validPattern = '~^[a-zA-Z0-9]+$~';
+
+        return preg_match($validPattern, $input) === 1;
     }
 }
