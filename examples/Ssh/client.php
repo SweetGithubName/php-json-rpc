@@ -35,10 +35,10 @@ $destination = "{$username}@{$server}";
 $scriptPath = realpath(__DIR__ . '/../Ssh/server.php');
 $command = 'php ' . escapeshellarg($scriptPath);
 
-// Invoke any custom SSH command-line options:
+// Invoke custom SSH command-line options
 $options = array(
     'p' => 22, // use port 22
-    'C' => null // enable compression (for a slow dial-up connection)
+    'q' => null // enable quiet mode (which will suppress most warnings)
 );
 
 $client = new Client($destination, $command, $options);
