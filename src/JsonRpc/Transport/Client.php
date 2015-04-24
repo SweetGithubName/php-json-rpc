@@ -28,7 +28,7 @@ interface Client
 {
     public function query($id, $method, $arguments);
 
-    public function notification($method, $arguments);
+    public function notify($method, $arguments);
 
     public function send();
 }

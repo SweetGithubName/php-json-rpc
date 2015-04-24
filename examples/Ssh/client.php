@@ -30,10 +30,18 @@ use Datto\JsonRpc\Transport\Ssh\Client;
 $server = 'localhost';
 $user = posix_getpwuid(posix_geteuid());
 $username = $user['name'];
+$destination = "{$username}@{$server}";
+
 $scriptPath = realpath(__DIR__ . '/../Ssh/server.php');
 $command = 'php ' . escapeshellarg($scriptPath);
 
-$client = new Client($server, $username, $command);
+// Invoke any custom SSH command-line options:
+$options = array(
+    'p' => 22, // use port 22
+    'C' => null // enable compression (for a slow dial-up connection)
+);
+
+$client = new Client($destination, $command, $options);
 
 $client->query(1, 'Math/subtract', array(3, 2));
 

@@ -42,9 +42,9 @@ class Client implements Transport\Client
         $this->server = new Message\Server($method);
     }
 
-    public function notification($method, $arguments)
+    public function notify($method, $arguments)
     {
-        $this->client->notification($method, $arguments);
+        $this->client->notify($method, $arguments);
     }
 
     public function query($id, $method, $arguments)

@@ -36,15 +36,15 @@ class Client implements Transport\Client
     /** @var Message\Client */
     protected $client;
 
-    public function __construct($host, $user, $command, $keyfile = null)
+    public function __construct($destination, $command, $options = array())
     {
-        $this->command = self::getSshCommand($host, $user, $keyfile, $command);
+        $this->command = self::getSshCommand($destination, $command, $options);
         $this->client = new Message\Client();
     }
 
-    public function notification($method, $arguments)
+    public function notify($method, $arguments)
     {
-        $this->client->notification($method, $arguments);
+        $this->client->notify($method, $arguments);
     }
 
     public function query($id, $method, $arguments)
@@ -59,14 +59,18 @@ class Client implements Transport\Client
         return $this->client->decode($reply);
     }
 
-    private static function execute($executable, $input)
+    private static function execute($executablePath, $input)
     {
+        if ($executablePath === null) {
+            return null;
+        }
+
         $descriptorSpec = array(
             array('pipe', 'r'),
             array('pipe', 'w')
         );
 
-        $process = proc_open($executable, $descriptorSpec, $pipes);
+        $process = proc_open($executablePath, $descriptorSpec, $pipes);
 
         if (!is_resource($process)) {
             return null;
@@ -89,19 +93,44 @@ class Client implements Transport\Client
         return $result;
     }
 
-    private static function getSshCommand($host, $user, $keyfile, $command)
+    private static function getSshCommand($destination, $command, $options)
     {
-        $sshCommand = 'ssh';
-
-        if ($keyfile !== null) {
-            $sshCommand .= ' -i ' . escapeshellarg($keyfile);
+        if (!self::isValidOptions($options)) {
+            return null;
         }
 
-        $sshCommand .=
-            ' -l ' . escapeshellarg($user) .
-            ' ' . escapeshellarg($host) .
-            ' -- ' . escapeshellarg($command);
+        $sshCommand = 'ssh';
 
-        return $sshCommand;
+        foreach ($options as $option => $value) {
+            $sshCommand .= ' -' . $option;
+
+            if ($value !== null) {
+                $sshCommand .= ' ' . escapeshellarg($value);
+            }
+        }
+
+        return $sshCommand .
+            ' ' . escapeshellarg($destination) .
+            ' -- ' . escapeshellarg($command);
+    }
+
+    private static function isValidOptions($input)
+    {
+        if (!is_array($input)) {
+            return false;
+        }
+
+        foreach ($input as $option => $value) {
+            if (!self::isValidOptionName($option)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function isValidOptionName($input)
+    {
+        return is_string($input) && ctype_alnum($input) && (0 < strlen($input));
     }
 }

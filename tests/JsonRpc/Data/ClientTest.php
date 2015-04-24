@@ -31,7 +31,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function testNotification()
     {
         $client = new Client();
-        $client->notification('subtract', array(3, 2));
+        $client->notify('subtract', array(3, 2));
 
         $this->compare($client,    '{"jsonrpc":"2.0","method":"subtract","params":[3,2]}');
     }
@@ -48,7 +48,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     {
         $client = new Client();
         $client->query(1, 'subtract', array(3, 2));
-        $client->notification('subtract', array(4, 3));
+        $client->notify('subtract', array(4, 3));
 
         $this->compare($client, '[{"jsonrpc":"2.0","id":1,"method":"subtract","params":[3,2]},{"jsonrpc":"2.0","method":"subtract","params":[4,3]}]');
     }
@@ -63,7 +63,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function testReset()
     {
         $client = new Client();
-        $client->notification('subtract', array(3, 2));
+        $client->notify('subtract', array(3, 2));
         $client->encode();
 
         $this->compare($client, null);

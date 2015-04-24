@@ -62,7 +62,7 @@ class Client
      * @param string $method
      * @param array $arguments
      */
-    public function notification($method, $arguments)
+    public function notify($method, $arguments)
     {
         $this->messages[] = array(
             'jsonrpc' => self::VERSION,
