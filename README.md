@@ -56,9 +56,11 @@ php examples\Php\client.php
 ```
 For the other examples, you'll need to follow the README file to set up the
 necessary environment first.
+
 2. Once your example is working, replace the method translator and the server-side
 code from the "Example/Stateless" directory with your own code.
-3. Write a clean wrapper around the JSON-RPC client class that will dove-tail
+
+3. Write a clean wrapper around the JSON-RPC client class that will dovetail
 nicely with your own project.
 
 ## Unit tests
