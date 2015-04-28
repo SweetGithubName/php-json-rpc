@@ -53,7 +53,7 @@ by inserting a line in the "require" section of your "composer.json" file:
 
 1. Try the examples! The "Php" example works right out of the box:
 	```
-	php examples\Php\client.php
+	php examples/Php/client.php
 	```
 	For the other examples, you'll need to follow the README file to set up the
 	necessary environment first.
