@@ -51,11 +51,8 @@ composer require datto/php-json-rpc
 ## Getting started
 
 1. Try the examples! The "Php" example will work right out of the box:
-```
-php examples\Php\client.php
-```
-For the other examples, you'll need to follow the README file to set up the
-necessary environment first.
+	```php examples\Php\client.php```
+	For the other examples, you'll need to follow the README file to set up the necessary environment first.
 
 2. Once your example is working, replace the method translator and the server-side
 code from the "Example/Stateless" directory with your own code.
