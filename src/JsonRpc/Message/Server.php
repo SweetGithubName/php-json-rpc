@@ -24,7 +24,7 @@
 
 namespace Datto\JsonRpc\Message;
 
-use Datto\JsonRpc\Method;
+use Datto\JsonRpc\MethodTranslator;
 
 /**
  * Class Server
@@ -37,13 +37,13 @@ class Server
 {
     const VERSION = '2.0';
 
-    /** @var Method */
+    /** @var MethodTranslator */
     private $method;
 
     /**
-     * @param Method $method
+     * @param MethodTranslator $method
      */
-    public function __construct(Method $method)
+    public function __construct(MethodTranslator $method)
     {
         $this->method = $method;
     }

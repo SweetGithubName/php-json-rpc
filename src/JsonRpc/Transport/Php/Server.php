@@ -27,17 +27,17 @@ namespace Datto\JsonRpc\Transport\Php;
 
 use Datto\JsonRpc\Transport;
 use Datto\JsonRpc\Message;
-use Datto\JsonRpc\Method;
+use Datto\JsonRpc\MethodTranslator;
 
 /**
  * Reads a JSON-RPC 2.0 request from STDIN and replies to STDOUT.
  */
 class Server implements Transport\Server
 {
-    /** @var Method */
+    /** @var MethodTranslator */
     private $method;
 
-    public function __construct(Method $method)
+    public function __construct(MethodTranslator $method)
     {
         $this->method = $method;
     }

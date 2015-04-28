@@ -24,14 +24,28 @@
 
 namespace Datto\JsonRpc;
 
-interface Method
+/**
+ * Interface MethodTranslator
+ *
+ * A "MethodTranslator" object translates a string method name to an actual
+ * callable method. This allows the JSON-RPC server to interpret the
+ * "method" argument in a request.
+ *
+ * You should create your a "MethodTranslator" class that will invoke your own codebase.
+ * If you'd like an example, the "tests" directory has both stateful and stateless
+ * (REST-style) examples.
+ *
+ * @package Datto\JsonRpc
+ */
+interface MethodTranslator
 {
     /**
      * @param string $name
-     * String value representing a method to invoke on the server.
+     * String value representing the method to invoke on the server.
      *
      * @return callable | null
-     * Returns a callable object, or null on error.
+     * Returns the corresponding callable method.
+     * Returns null on error.
      */
     public function getCallable($name);
 }

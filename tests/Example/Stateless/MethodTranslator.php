@@ -22,19 +22,13 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto\Tests\Example\Stateful;
+namespace Datto\Tests\Example\Stateless;
 
 use Datto\JsonRpc;
 
-class Method implements JsonRpc\Method
+class MethodTranslator implements JsonRpc\MethodTranslator
 {
-    /** @var Math */
-    private $math;
-
-    public function __construct()
-    {
-        $this->math = new Math();
-    }
+    private static $namespace = '\\Datto\\Tests\\Example\\Stateless\\';
 
     /**
      * @param string $name
@@ -47,7 +41,11 @@ class Method implements JsonRpc\Method
             return null;
         }
 
-        return array($this->math, $name);
+        $parts = explode('/', $name);
+        $method = array_pop($parts);
+        $class = self::$namespace . implode('\\', $parts);
+
+        return array($class, $method);
     }
 
     /**
@@ -62,7 +60,7 @@ class Method implements JsonRpc\Method
             return false;
         }
 
-        $validPattern = '~^[a-zA-Z0-9]+$~';
+        $validPattern = '~^[a-zA-Z0-9]+(/[a-zA-Z0-9]+)+$~';
 
         return preg_match($validPattern, $input) === 1;
     }

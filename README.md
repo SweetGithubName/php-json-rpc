@@ -29,8 +29,7 @@ composer require datto/php-json-rpc
 ### Client
 
 ```php
-$method = new Method();
-$client = new Client($method);
+$client = new Client('http://api.example.com');
 
 $client->query(1, 'Math/subtract', [3, 2]);
 
@@ -40,8 +39,8 @@ $reply = $client->send();
 ### Server
 
 ```php
-$method = new Method();
-$server = new Server($method);
+$translator = new MethodTranslator();
+$server = new Server($translator);
 
 $server->reply();
 ```

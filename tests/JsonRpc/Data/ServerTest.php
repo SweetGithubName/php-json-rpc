@@ -25,7 +25,7 @@
 namespace Datto\JsonRpc\Message;
 
 use PHPUnit_Framework_TestCase;
-use Datto\Tests\Example\Stateless\Method;
+use Datto\Tests\Example\Stateless\MethodTranslator;
 
 class ServerTest extends PHPUnit_Framework_TestCase
 {
@@ -221,7 +221,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
     private function compare($input, $expectedJsonOutput)
     {
-        $method = new Method();
+        $method = new MethodTranslator();
         $server = new Server($method);
 
         $actualJsonOutput = $server->reply($input);

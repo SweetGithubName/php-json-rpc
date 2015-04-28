@@ -26,7 +26,7 @@ namespace Datto\JsonRpc\Transport\Http;
 
 use Datto\JsonRpc\Transport;
 use Datto\JsonRpc\Message;
-use Datto\JsonRpc\Method;
+use Datto\JsonRpc\MethodTranslator;
 
 /**
  * Class Server
@@ -39,10 +39,10 @@ class Server implements Transport\Server
 {
     private static $contentType = 'application/json';
 
-    /** @var Method */
+    /** @var MethodTranslator */
     private $method;
 
-    public function __construct(Method $method)
+    public function __construct(MethodTranslator $method)
     {
         $this->method = $method;
     }

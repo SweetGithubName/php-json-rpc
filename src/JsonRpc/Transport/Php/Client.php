@@ -26,7 +26,7 @@ namespace Datto\JsonRpc\Transport\Php;
 
 use Datto\JsonRpc\Transport;
 use Datto\JsonRpc\Message;
-use Datto\JsonRpc\Method;
+use Datto\JsonRpc\MethodTranslator;
 
 class Client implements Transport\Client
 {
@@ -36,7 +36,7 @@ class Client implements Transport\Client
     /** @var Message\Server */
     private $server;
 
-    public function __construct(Method $method)
+    public function __construct(MethodTranslator $method)
     {
         $this->client = new Message\Client();
         $this->server = new Message\Server($method);

@@ -25,11 +25,11 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use Datto\Tests\Example\Stateless\Method;
+use Datto\Tests\Example\Stateless\MethodTranslator;
 use Datto\JsonRpc\Transport\Php\Client;
 
-$method = new Method();
-$client = new Client($method);
+$translator = new MethodTranslator();
+$client = new Client($translator);
 
 $client->query(1, 'Math/subtract', [3, 2]);
 

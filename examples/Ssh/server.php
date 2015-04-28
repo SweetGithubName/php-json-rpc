@@ -25,10 +25,10 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use Datto\Tests\Example\Stateless\Method;
+use Datto\Tests\Example\Stateless\MethodTranslator;
 use Datto\JsonRpc\Transport\Php\Server;
 
-$method = new Method();
+$method = new MethodTranslator();
 $server = new Server($method);
 
 $server->reply();
