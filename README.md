@@ -2,11 +2,11 @@
 
 ## Features
 
-* Fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification) with 100% unit-test coverage
-* Customizable:
-  * You can make JSON-RPC requests over HTTP or SSH, or locally through PHP
+* Fully compliant with the [JSON-RPC 2.0 specifications](http://www.jsonrpc.org/specification) (100% unit-test coverage)
+* Versatile:
+  * You can make JSON-RPC requests over HTTP or SSH (or locally through PHP)
   * You can choose your own system for interpreting the JSON-RPC method strings
-* Lightweight and flexible; works even when CURL is not installed
+* Minimalistic and flexible (works even when CURL is not installed)
 
 ## Requirements
 
@@ -15,14 +15,6 @@
 ## License
 
 This package is released under an open-source license: [LGPL-3.0](https://www.gnu.org/licenses/lgpl-3.0.html)
-
-## Installation
-
-If you're using [Composer](https://getcomposer.org/) as your dependency
-management system, you can install the source code like this:
-```
-composer require datto/php-json-rpc
-```
 
 ## Examples
 
@@ -47,6 +39,27 @@ $server->reply();
 ```
 
 *See the "examples" folder for ready-to-use examples.*
+
+## Installation
+
+If you're using [Composer](https://getcomposer.org/) as your dependency
+management system, you can install the source code like this:
+```
+composer require datto/php-json-rpc
+```
+
+## Getting started
+
+1. Try the examples! The "Php" example will work right out of the box:
+```
+php examples\Php\client.php
+```
+For the other examples, you'll need to follow the README file to set up the
+necessary environment first.
+2. Once your example is working, replace the method translator and the server-side
+code from the "Example/Stateless" directory with your own code.
+3. Write a clean wrapper around the JSON-RPC client class that will dove-tail
+nicely with your own project.
 
 ## Unit tests
 
