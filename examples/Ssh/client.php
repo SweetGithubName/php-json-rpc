@@ -27,19 +27,9 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 use Datto\JsonRpc\Transport\Ssh\Client;
 
-$server = 'localhost';
-$user = posix_getpwuid(posix_geteuid());
-$username = $user['name'];
-$destination = "{$username}@{$server}";
-
-$scriptPath = realpath(__DIR__ . '/../Ssh/server.php');
-$command = 'php ' . escapeshellarg($scriptPath);
-
-// Invoke custom SSH command-line options
-$options = array(
-    'p' => 22, // use port 22
-    'q' => null // enable quiet mode (which will suppress most warnings)
-);
+$destination = getSshDestination();
+$command = getRemoteCommand();
+$options = getSshOptions();
 
 $client = new Client($destination, $command, $options);
 
@@ -47,3 +37,27 @@ $client->query(1, 'Math/subtract', array(3, 2));
 
 $reply = $client->send();
 echo json_encode($reply), "\n";
+
+
+function getSshDestination()
+{
+    $server = 'localhost';
+    $user = posix_getpwuid(posix_geteuid());
+    $username = $user['name'];
+    return "{$username}@{$server}";
+}
+
+function getRemoteCommand()
+{
+    $scriptPath = realpath(__DIR__ . '/../Ssh/server.php');
+    return 'php ' . escapeshellarg($scriptPath);
+}
+
+function getSshOptions()
+{
+    // Custom SSH command-line options:
+    return array(
+        'p' => 22, // use port 22
+        'q' => null // enable quiet mode (which will suppress most warnings)
+    );
+}

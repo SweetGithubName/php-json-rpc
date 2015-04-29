@@ -31,7 +31,7 @@ use Datto\JsonRpc\Transport\Php\Client;
 $translator = new MethodTranslator();
 $client = new Client($translator);
 
-$client->query(1, 'Math/subtract', [3, 2]);
+$client->query(1, 'Math/subtract', array(3, 2));
 
 $reply = $client->send();
 echo json_encode($reply), "\n";

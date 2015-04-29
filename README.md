@@ -23,7 +23,7 @@ This package is released under an open-source license: [LGPL-3.0](https://www.gn
 ```php
 $client = new Client('http://api.example.com');
 
-$client->query(1, 'subtract', [3, 2]);
+$client->query(1, 'subtract', array(3, 2));
 
 $reply = $client->send();
 ```
