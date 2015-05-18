@@ -23,12 +23,12 @@
  * @copyright 2015 Datto, Inc.
  */
 
-namespace Datto\JsonRpc\Transport\Http;
+namespace Datto\JsonRpc\Transport\Http\BasicAuthentication;
 
 use Datto\JsonRpc\Message;
 use Datto\JsonRpc\Transport;
 
-class BasicAuthClient implements Transport\Client
+class Client implements Transport\Client
 {
     /** @var string */
     private $uri;
@@ -42,11 +42,14 @@ class BasicAuthClient implements Transport\Client
     /** @var string */
     private $password;
 
-    public function __construct($uri,$username,$password)
+    public function __construct($uri, $username, $password)
     {
+        $client = new Message\Client();
+
         $this->uri = $uri;
-        $this->setBasicAuthCredentials($username,$password);
-        $this->client = new Message\Client();
+        $this->client = $client;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     public function notify($method, $arguments)
@@ -66,33 +69,21 @@ class BasicAuthClient implements Transport\Client
         return $this->client->decode($reply);
     }
 
-    public function setBasicAuthCredentials($username,$password)
-    {
-        $this->username = $username;
-        $this->password = $password;
-        return $this;
-    }
-
-    public function getBasicAuthCredentials()
-    {
-        return base64_encode("{$this->username}:{$this->password}");
-    }
-
-
     private function execute($content, $method, $contentType)
     {
         $contentLength = strlen($content);
+        $authorization = $this->getBasicAuthentication();
 
         $header = "Content-Type: {$contentType}\r\n" .
             "Content-Length: {$contentLength}\r\n" .
-            "Accept: {$contentType}\r\n";
+            "Accept: {$contentType}\r\n" .
+            "Authorization: {$authorization}\r\n";
 
         $options = array(
             'http' => array(
                 'method' => $method,
                 'header' => $header,
-                'content' => $content,
-                'Authorization: Basic ' => $this->getBasicAuthCredentials()
+                'content' => $content
             )
         );
 
@@ -104,5 +95,10 @@ class BasicAuthClient implements Transport\Client
         }
 
         return $reply;
+    }
+
+    private function getBasicAuthentication()
+    {
+        return 'Basic ' . base64_encode("{$this->username}:{$this->password}");
     }
 }
