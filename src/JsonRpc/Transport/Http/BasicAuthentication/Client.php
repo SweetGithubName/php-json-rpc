@@ -52,12 +52,12 @@ class Client implements Transport\Client
         $this->password = $password;
     }
 
-    public function notify($method, $arguments)
+    public function notify($method, $arguments = null)
     {
         $this->client->notify($method, $arguments);
     }
 
-    public function query($id, $method, $arguments)
+    public function query($id, $method, $arguments = null)
     {
         $this->client->query($id, $method, $arguments);
     }

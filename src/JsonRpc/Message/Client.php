@@ -48,27 +48,37 @@ class Client
      * @param string $method
      * @param array $arguments
      */
-    public function query($id, $method, $arguments)
+    public function query($id, $method, $arguments = null)
     {
-        $this->messages[] = array(
+        $message = array(
             'jsonrpc' => self::VERSION,
             'id' => $id,
-            'method' => $method,
-            'params' => $arguments
+            'method' => $method
         );
+
+        if ($arguments !== null) {
+            $message['params'] = $arguments;
+        }
+
+        $this->messages[] = $message;
     }
 
     /**
      * @param string $method
      * @param array $arguments
      */
-    public function notify($method, $arguments)
+    public function notify($method, $arguments = null)
     {
-        $this->messages[] = array(
+        $message = array(
             'jsonrpc' => self::VERSION,
-            'method' => $method,
-            'params' => $arguments
+            'method' => $method
         );
+
+        if ($arguments !== null) {
+            $message['params'] = $arguments;
+        }
+
+        $this->messages[] = $message;
     }
 
     public function encode()
