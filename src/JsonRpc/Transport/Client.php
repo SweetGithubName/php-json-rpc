@@ -26,9 +26,9 @@ namespace Datto\JsonRpc\Transport;
 
 interface Client
 {
-    public function query($id, $method, $arguments);
+    public function query($id, $method, $arguments = null);
 
-    public function notify($method, $arguments);
+    public function notify($method, $arguments = null);
 
     public function send();
 }
